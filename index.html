@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mosaico Bliar — Loja Oficial</title>
-  <meta name="description" content="Mosaico Bliar. Veja vários ângulos e vídeo dos produtos, calcule o frete por CEP nos Correios ou Transportadora e pague via Pix, Crédito ou Débito.">
+  <meta name="description" content="Mosaico Bliar. Escolha cor e numeração, calcule o frete por CEP nos Correios ou Transportadora e finalize sua compra via Pix, Crédito ou Débito.">
   <link rel="canonical" href="https://appbliar.com.br/">
   <style>
     :root {
@@ -18,6 +18,7 @@
       --text-dark: #141418;
       --text-muted: #6b6b76;
       --border-dark: #2a2a33;
+      --success: #16a34a;
     }
 
     * { box-sizing: border-box; }
@@ -140,7 +141,6 @@
       gap: 6px;
     }
 
-    /* Banner limpo e mais claro mostrando o tênis ao fundo */
     .hero {
       position: relative;
       min-height: 240px;
@@ -155,10 +155,7 @@
       text-align: center;
     }
 
-    .hero-content {
-      max-width: 720px;
-      margin: 0 auto;
-    }
+    .hero-content { max-width: 720px; margin: 0 auto; }
 
     .hero h1 {
       margin: 0;
@@ -202,7 +199,7 @@
       width: 100%;
       border-radius: 8px;
       border: 1px solid #d0d0d8;
-      padding: 10px 11px;
+      padding: 9px 11px;
       font-size: 0.9rem;
       background: var(--white);
       color: var(--text-dark);
@@ -254,7 +251,7 @@
 
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(305px, 1fr));
       gap: 20px;
     }
 
@@ -286,7 +283,7 @@
 
     .main-img {
       width: 100%;
-      height: 240px;
+      height: 235px;
       object-fit: cover;
       border-radius: 10px;
       display: block;
@@ -319,6 +316,23 @@
     .prod-price { font-size: 1.35rem; font-weight: 900; }
     .prod-price span { background: var(--gold); color: var(--black); padding: 2px 8px; border-radius: 6px; }
 
+    .variants-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .variants-row label {
+      color: var(--text-dark);
+      font-size: 0.78rem;
+      margin-bottom: 3px;
+    }
+
+    .variants-row select {
+      padding: 8px;
+      font-size: 0.84rem;
+    }
+
     .freight-box {
       background: #faf8f2;
       border: 1px solid #eadc9f;
@@ -348,15 +362,16 @@
       text-align: center;
     }
 
+    /* Checkout completo na tela */
     .modal-backdrop {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.78);
+      background: rgba(0, 0, 0, 0.82);
       z-index: 60;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 14px;
     }
 
     .modal-backdrop.open { display: flex; }
@@ -366,14 +381,38 @@
       color: var(--white);
       border: 1.5px solid var(--gold);
       border-radius: 18px;
-      max-width: 450px;
+      max-width: 490px;
       width: 100%;
       padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      max-height: 92vh;
+      max-height: 94vh;
       overflow-y: auto;
+    }
+
+    .checkout-section {
+      background: var(--black-3);
+      border: 1px solid var(--border-dark);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .checkout-section input {
+      background: var(--black-2);
+      color: var(--white);
+      border-color: #3a3a46;
+      padding: 9px 10px;
+      font-size: 0.86rem;
+    }
+
+    .two-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
     }
 
     .method-tabs {
@@ -388,7 +427,7 @@
       border: 1px solid var(--border-dark);
       border-radius: 8px;
       padding: 9px 6px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 700;
       cursor: pointer;
       text-align: center;
@@ -400,17 +439,28 @@
       border-color: var(--gold-bright);
     }
 
-    .method-panel {
-      background: var(--black-3);
-      border: 1px solid var(--border-dark);
-      border-radius: 10px;
-      padding: 12px;
+    .pix-code-area {
+      background: var(--black-2);
+      color: var(--gold-bright);
+      border: 1px dashed var(--gold);
+      border-radius: 8px;
+      padding: 9px;
+      font-size: 0.8rem;
       word-break: break-all;
-      font-size: 0.88rem;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      font-family: monospace;
     }
+
+    .order-done-box {
+      display: none;
+      background: rgba(22, 163, 74, 0.16);
+      border: 1.5px solid var(--success);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .order-done-box.show { display: block; }
 
     footer {
       background: var(--black);
@@ -490,8 +540,8 @@
 
   <main class="container">
     <section id="adminPanel" class="admin-panel">
-      <h2 style="margin:0 0 4px; color:var(--gold-bright); font-size:1.15rem;">Cadastrar produto com fotos da galeria</h2>
-      <p style="margin:0; font-size:0.84rem; color:#c8c8d2;">Selecione até 5 fotos direto da galeria do celular (frente, lateral, interior, solado). O cliente poderá escolher pagar no Pix, Cartão de Crédito ou Cartão de Débito.</p>
+      <h2 style="margin:0 0 4px; color:var(--gold-bright); font-size:1.15rem;">Cadastrar produto com cores e numeração</h2>
+      <p style="margin:0; font-size:0.84rem; color:#c8c8d2;">Escolha as fotos da galeria, coloque as numerações (ex.: 34, 35, 36, 37, 38, 39, 40, 41, 42, 43) e as cores (ex.: Preto, Off, Vermelho).</p>
 
       <form id="productForm" class="form-grid">
         <div style="grid-column: 1 / -1;" class="gallery-picker-box">
@@ -509,16 +559,20 @@
           <input id="pPrice" type="number" step="0.01" min="1" required placeholder="189.90">
         </div>
         <div>
+          <label for="pSizes">Numerações disponíveis (separadas por vírgula)</label>
+          <input id="pSizes" type="text" value="34, 35, 36, 37, 38, 39, 40, 41, 42, 43" required placeholder="34, 35, 36, 37, 38, 39, 40, 41, 42, 43">
+        </div>
+        <div>
+          <label for="pColors">Cores disponíveis (separadas por vírgula)</label>
+          <input id="pColors" type="text" value="Preto, Off, Vermelho" required placeholder="Preto, Off, Vermelho">
+        </div>
+        <div style="grid-column: 1 / -1;">
           <label for="pVideo">Link do vídeo (YouTube ou TikTok)</label>
           <input id="pVideo" type="url" placeholder="https://youtube.com/shorts/...">
         </div>
-        <div>
-          <label for="pCheckout">Link de cartão/checkout (opcional)</label>
-          <input id="pCheckout" type="url" placeholder="Ex.: link de pagamento que aceita cartão">
-        </div>
         <div style="grid-column: 1 / -1;">
           <label for="pDesc">Descrição e detalhes</label>
-          <textarea id="pDesc" rows="2" placeholder="Numeração disponível, material, detalhes do solado e acabamento."></textarea>
+          <textarea id="pDesc" rows="2" placeholder="Detalhes do material, solado e acabamento."></textarea>
         </div>
 
         <div style="grid-column: 1 / -1; display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap;">
@@ -541,29 +595,97 @@
     <section id="productsGrid" class="products-grid"></section>
   </main>
 
+  <!-- Checkout completo direto no site -->
   <div id="checkoutModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h3 style="margin:0; color:var(--gold-bright);">Escolha como pagar</h3>
+        <h3 style="margin:0; color:var(--gold-bright);">Finalizar Compra</h3>
         <button type="button" class="btn-outline-gold" style="padding:4px 10px;" onclick="closeCheckout()">X</button>
       </div>
 
-      <div id="checkoutSummary" style="font-size:0.92rem; line-height:1.5;"></div>
+      <div id="checkoutSummary" style="font-size:0.9rem; line-height:1.45;"></div>
 
-      <div>
-        <label style="margin-bottom:6px;">Forma de pagamento escolhida pelo cliente:</label>
-        <div class="method-tabs">
-          <button type="button" id="tab-pix" class="method-btn active" onclick="selectPaymentMethod('pix')">Pix</button>
-          <button type="button" id="tab-credito" class="method-btn" onclick="selectPaymentMethod('credito')">Cartão Crédito</button>
-          <button type="button" id="tab-debito" class="method-btn" onclick="selectPaymentMethod('debito')">Cartão Débito</button>
+      <form id="checkoutForm" style="display:flex; flex-direction:column; gap:10px;">
+        <div class="checkout-section">
+          <div style="font-size:0.8rem; font-weight:800; color:var(--gold-bright);">1. DADOS E ENDEREÇO DE ENTREGA</div>
+          <div>
+            <label for="cName">Nome completo do cliente</label>
+            <input id="cName" type="text" required placeholder="Nome completo">
+          </div>
+          <div class="two-cols">
+            <div>
+              <label for="cCpf">CPF</label>
+              <input id="cCpf" type="text" required placeholder="000.000.000-00">
+            </div>
+            <div>
+              <label for="cCep">CEP</label>
+              <input id="cCep" type="text" required placeholder="00000-000">
+            </div>
+          </div>
+          <div>
+            <label for="cStreet">Rua / Avenida e Número</label>
+            <input id="cStreet" type="text" required placeholder="Rua exemplo, 123">
+          </div>
+          <div class="two-cols">
+            <div>
+              <label for="cDistrict">Bairro</label>
+              <input id="cDistrict" type="text" required placeholder="Bairro">
+            </div>
+            <div>
+              <label for="cCity">Cidade / UF</label>
+              <input id="cCity" type="text" required placeholder="São Paulo - SP">
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div id="methodPanel" class="method-panel"></div>
+        <div class="checkout-section">
+          <div style="font-size:0.8rem; font-weight:800; color:var(--gold-bright);">2. ESCOLHA A FORMA DE PAGAMENTO</div>
+          <div class="method-tabs">
+            <button type="button" id="tab-pix" class="method-btn active" onclick="setPayTab('pix')">Pix</button>
+            <button type="button" id="tab-credito" class="method-btn" onclick="setPayTab('credito')">Cartão Crédito</button>
+            <button type="button" id="tab-debito" class="method-btn" onclick="setPayTab('debito')">Cartão Débito</button>
+          </div>
 
-      <button type="button" id="copyPixBtn" class="btn-gold" onclick="copyPixKey()">Copiar Chave Pix</button>
-      <a id="checkoutCardLinkBtn" class="btn-gold" href="#" target="_blank" rel="noopener" style="display:none;">Ir para pagamento com cartão</a>
-      <a id="checkoutWhatsappBtn" class="btn-outline-gold" href="#" target="_blank" rel="noopener">Confirmar pedido no WhatsApp</a>
+          <!-- Painel Pix -->
+          <div id="panel-pix" style="display:flex; flex-direction:column; gap:8px;">
+            <div style="font-size:0.84rem;"><strong>Recebedor:</strong> <span id="pixReceiverLabel"></span> • <strong>Banco:</strong> <span id="pixBankLabel"></span></div>
+            <label style="margin:0;">Código Pix Copia e Cola para pagar:</label>
+            <div id="pixCopiaEColaBox" class="pix-code-area"></div>
+            <button type="button" class="btn-outline-gold" onclick="copyPixCode()">Copiar código Pix</button>
+          </div>
+
+          <!-- Painel Cartão de Crédito / Débito -->
+          <div id="panel-card" style="display:none; flex-direction:column; gap:8px;">
+            <div id="cardMethodTitle" style="font-size:0.82rem; font-weight:800; color:var(--gold-bright);">DADOS DO CARTÃO</div>
+            <div>
+              <label for="cardHolder">Nome impresso no cartão</label>
+              <input id="cardHolder" type="text" placeholder="Como está no cartão">
+            </div>
+            <div>
+              <label for="cardCpf">CPF do titular</label>
+              <input id="cardCpf" type="text" placeholder="000.000.000-00">
+            </div>
+            <div>
+              <label for="cardNumber">Número do cartão</label>
+              <input id="cardNumber" type="text" inputmode="numeric" placeholder="0000 0000 0000 0000">
+            </div>
+            <div class="two-cols">
+              <div>
+                <label for="cardExpiry">Validade (MM/AA)</label>
+                <input id="cardExpiry" type="text" placeholder="12/28">
+              </div>
+              <div>
+                <label for="cardCvv">Código de segurança (CVV)</label>
+                <input id="cardCvv" type="text" inputmode="numeric" maxlength="4" placeholder="123">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-gold" style="padding:12px;">Finalizar compra</button>
+      </form>
+
+      <div id="orderDoneBox" class="order-done-box"></div>
     </div>
   </div>
 
@@ -579,22 +701,23 @@
   </nav>
 
   <script>
+    // CONFIGURAÇÃO DA LOJA (coloque aqui seu WhatsApp e o código Pix / chave que você vai usar)
     const CONFIG = {
       whatsapp: "5511999999999",
-      pixChave: "SUA-CHAVE-PIX-AQUI",
-      pixRecebedor: "Mosaico Bliar",
-      pixBanco: "Nubank",
-      cardCheckoutPadrao: ""
+      pixReceiver: "Mosaico Bliar",
+      pixBank: "Nubank",
+      pixCopiaECola: "COLE-AQUI-SEU-CODIGO-PIX-COPIA-E-COLA-OU-CHAVE-PIX"
     };
 
     const INITIAL_PRODUCTS = [
       {
         id: "mb-1",
-        name: "Tênis Clássico Mosaico Bliar",
+        name: "Tênis Casual Off Mosaico Bliar",
         price: 189.90,
-        description: "Veja vários ângulos do produto (frente, lateral, interno e solado). Escolha Correios ou Transportadora calculando pelo CEP.",
+        sizes: ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"],
+        colors: ["Preto", "Off", "Vermelho"],
+        description: "Escolha cor e numeração, veja vários ângulos e vídeo, calcule o frete pelo CEP e finalize direto no site.",
         videoUrl: "https://www.youtube.com/",
-        checkoutUrl: "",
         photos: [
           "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
           "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=800&q=80",
@@ -603,19 +726,10 @@
       }
     ];
 
-    const STORAGE_KEY = "mosaico_bliar_vitrine_v4";
+    const STORAGE_KEY = "mosaico_bliar_vitrine_v5";
     let selectedGalleryImages = [];
-    let currentCheckoutData = {
-      id: "",
-      name: "",
-      price: 0,
-      total: 0,
-      cepLabel: "",
-      modeLabel: "",
-      freightValor: 0,
-      cardUrl: "",
-      method: "pix"
-    };
+    let activePayMethod = "pix";
+    let currentOrderBase = null;
 
     function loadProducts() {
       try {
@@ -632,7 +746,7 @@
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
       } catch (err) {
-        alert("Memória do navegador cheia. Remova algum produto antigo ou use menos fotos por produto.");
+        alert("Memória do navegador cheia. Remova algum produto antigo ou use menos fotos.");
       }
     }
 
@@ -729,7 +843,7 @@
       };
     }
 
-    function runFreight(id, name, price) {
+    function runFreight(id, price) {
       const cepEl = document.getElementById("cep-" + id);
       const modeEl = document.getElementById("mode-" + id);
       const outEl = document.getElementById("freight-out-" + id);
@@ -744,95 +858,72 @@
       outEl.innerHTML = `${res.modeLabel} (${res.cep}): <strong>${money(res.valor)}</strong> • ${res.prazo} • Total: <strong>${money(total)}</strong>`;
     }
 
-    function buildWhatsappWithMethod(data) {
-      const methodLabel =
-        data.method === "credito" ? "Cartão de Crédito" :
-        data.method === "debito" ? "Cartão de Débito" : "Pix";
-
-      let msg = `Olá! Quero comprar *${data.name}* (${money(data.price)}) na *Mosaico Bliar*.\nForma de pagamento escolhida: *${methodLabel}*.`;
-      if (data.cepLabel) {
-        msg += `\nCEP: *${data.cepLabel}*\nEnvio: *${data.modeLabel}* (${money(data.freightValor)})\nTotal: *${money(data.total)}*`;
-      }
-      return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
-    }
-
-    function selectPaymentMethod(method) {
-      currentCheckoutData.method = method;
-
+    function setPayTab(method) {
+      activePayMethod = method;
       ["pix", "credito", "debito"].forEach((m) => {
         document.getElementById("tab-" + m).classList.toggle("active", m === method);
       });
 
-      const panel = document.getElementById("methodPanel");
-      const copyBtn = document.getElementById("copyPixBtn");
-      const cardBtn = document.getElementById("checkoutCardLinkBtn");
-      const waBtn = document.getElementById("checkoutWhatsappBtn");
+      const pixPanel = document.getElementById("panel-pix");
+      const cardPanel = document.getElementById("panel-card");
+      const cardTitle = document.getElementById("cardMethodTitle");
 
       if (method === "pix") {
-        panel.innerHTML = `
-          <div style="font-size:0.78rem; color:var(--gold-bright); font-weight:700;">PAGAMENTO VIA PIX</div>
-          <div><strong>Recebedor:</strong> ${CONFIG.pixRecebedor}</div>
-          <div><strong>Banco:</strong> ${CONFIG.pixBanco}</div>
-          <div><strong>Chave Pix:</strong> ${CONFIG.pixChave}</div>
-        `;
-        copyBtn.style.display = "inline-flex";
-        cardBtn.style.display = "none";
-        waBtn.textContent = "Enviar comprovante Pix no WhatsApp";
+        pixPanel.style.display = "flex";
+        cardPanel.style.display = "none";
       } else {
-        const labelCard = method === "credito" ? "CARTÃO DE CRÉDITO" : "CARTÃO DE DÉBITO";
-        panel.innerHTML = `
-          <div style="font-size:0.78rem; color:var(--gold-bright); font-weight:700;">PAGAMENTO VIA ${labelCard}</div>
-          <div>Você escolheu pagar no <strong>${method === "credito" ? "Cartão de Crédito" : "Cartão de Débito"}</strong>.</div>
-          <div style="color:#d4d4dc; font-size:0.82rem;">Se houver link de pagamento configurado para o produto, você pode abrir abaixo; caso contrário, envie o pedido no WhatsApp para finalizar na modalidade escolhida.</div>
-        `;
-        copyBtn.style.display = "none";
-        if (currentCheckoutData.cardUrl) {
-          cardBtn.href = currentCheckoutData.cardUrl;
-          cardBtn.style.display = "inline-flex";
-        } else {
-          cardBtn.style.display = "none";
-        }
-        waBtn.textContent = `Finalizar no ${method === "credito" ? "Crédito" : "Débito"} via WhatsApp`;
+        pixPanel.style.display = "none";
+        cardPanel.style.display = "flex";
+        cardTitle.textContent = method === "credito"
+          ? "DADOS DO CARTÃO DE CRÉDITO"
+          : "DADOS DO CARTÃO DE DÉBITO";
       }
-
-      waBtn.href = buildWhatsappWithMethod(currentCheckoutData);
     }
 
     function openCheckout(id) {
       const prod = loadProducts().find((p) => p.id === id);
       if (!prod) return;
 
-      const cepVal = document.getElementById("cep-" + id)?.value || "";
+      const selectedSize = document.getElementById("size-" + id)?.value || (prod.sizes?.[0] || "Único");
+      const selectedColor = document.getElementById("color-" + id)?.value || (prod.colors?.[0] || "Padrão");
+      const cepInputVal = document.getElementById("cep-" + id)?.value || "";
       const modeVal = document.getElementById("mode-" + id)?.value || "correios";
-      const res = calcFreight(cepVal, modeVal);
+      const res = calcFreight(cepInputVal, modeVal);
 
       const freightValor = !res.error ? res.valor : 0;
       const total = Number(prod.price) + freightValor;
 
-      currentCheckoutData = {
-        id: prod.id,
-        name: prod.name,
+      currentOrderBase = {
+        prodName: prod.name,
         price: Number(prod.price),
-        total,
-        cepLabel: !res.error ? res.cep : "",
-        modeLabel: !res.error ? res.modeLabel : "",
+        size: selectedSize,
+        color: selectedColor,
         freightValor,
-        cardUrl: prod.checkoutUrl || CONFIG.cardCheckoutPadrao || "",
-        method: "pix"
+        freightLabel: !res.error ? `${res.modeLabel} (${money(res.valor)})` : "A calcular no CEP",
+        total
       };
-
-      const freightLine = !res.error
-        ? `<div><strong>Frete (${res.modeLabel} - CEP ${res.cep}):</strong> ${money(res.valor)}</div>`
-        : `<div style="color:#fcd34d;">Calcule o CEP no card se quiser somar o frete agora.</div>`;
 
       document.getElementById("checkoutSummary").innerHTML = `
         <div><strong>Produto:</strong> ${prod.name}</div>
-        <div><strong>Valor do produto:</strong> ${money(prod.price)}</div>
-        ${freightLine}
-        <div style="font-size:1.1rem; color:var(--gold-bright); margin-top:4px;"><strong>Total: ${money(total)}</strong></div>
+        <div><strong>Cor:</strong> ${selectedColor} • <strong>Numeração:</strong> ${selectedSize}</div>
+        <div><strong>Produto:</strong> ${money(prod.price)} • <strong>Frete:</strong> ${currentOrderBase.freightLabel}</div>
+        <div style="font-size:1.08rem; color:var(--gold-bright); margin-top:4px;"><strong>Total: ${money(total)}</strong></div>
       `;
 
-      selectPaymentMethod("pix");
+      if (!res.error) {
+        document.getElementById("cCep").value = res.cep;
+      } else {
+        document.getElementById("cCep").value = "";
+      }
+
+      document.getElementById("pixReceiverLabel").textContent = CONFIG.pixReceiver;
+      document.getElementById("pixBankLabel").textContent = CONFIG.pixBank;
+      document.getElementById("pixCopiaEColaBox").textContent = CONFIG.pixCopiaECola;
+      document.getElementById("orderDoneBox").classList.remove("show");
+      document.getElementById("orderDoneBox").innerHTML = "";
+      document.getElementById("checkoutForm").style.display = "flex";
+
+      setPayTab("pix");
       document.getElementById("checkoutModal").classList.add("open");
     }
 
@@ -840,15 +931,65 @@
       document.getElementById("checkoutModal").classList.remove("open");
     }
 
-    function copyPixKey() {
-      navigator.clipboard?.writeText(CONFIG.pixChave);
-      alert("Chave Pix copiada: " + CONFIG.pixChave);
+    function copyPixCode() {
+      navigator.clipboard?.writeText(CONFIG.pixCopiaECola);
+      alert("Código Pix copiado!");
     }
+
+    document.getElementById("checkoutForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (!currentOrderBase) return;
+
+      const cName = document.getElementById("cName").value.trim();
+      const cCpf = document.getElementById("cCpf").value.trim();
+      const cCep = document.getElementById("cCep").value.trim();
+      const cStreet = document.getElementById("cStreet").value.trim();
+      const cDistrict = document.getElementById("cDistrict").value.trim();
+      const cCity = document.getElementById("cCity").value.trim();
+
+      let methodText = "Pix (Código Copia e Cola)";
+      if (activePayMethod === "credito") {
+        const holder = document.getElementById("cardHolder").value.trim();
+        const num = document.getElementById("cardNumber").value.replace(/\s+/g, "");
+        if (!holder || num.length < 12) {
+          alert("Preencha os dados do cartão de crédito para finalizar.");
+          return;
+        }
+        methodText = `Cartão de Crédito (final ${num.slice(-4)})`;
+      } else if (activePayMethod === "debito") {
+        const holder = document.getElementById("cardHolder").value.trim();
+        const num = document.getElementById("cardNumber").value.replace(/\s+/g, "");
+        if (!holder || num.length < 12) {
+          alert("Preencha os dados do cartão de débito para finalizar.");
+          return;
+        }
+        methodText = `Cartão de Débito (final ${num.slice(-4)})`;
+      }
+
+      const orderCode = "MB-" + String(Date.now()).slice(-6);
+
+      // Limpa campos sensíveis do cartão da memória da página após submeter
+      document.getElementById("cardNumber").value = "";
+      document.getElementById("cardCvv").value = "";
+
+      document.getElementById("checkoutForm").style.display = "none";
+      const doneBox = document.getElementById("orderDoneBox");
+      doneBox.innerHTML = `
+        <div style="font-weight:800; color:#86efac; font-size:1rem; margin-bottom:6px;">Compra registrada — Pedido ${orderCode}</div>
+        <div><strong>Cliente:</strong> ${cName} (${cCpf})</div>
+        <div><strong>Item:</strong> ${currentOrderBase.prodName} • Cor <strong>${currentOrderBase.color}</strong> • Nº <strong>${currentOrderBase.size}</strong></div>
+        <div><strong>Endereço:</strong> ${cStreet}, ${cDistrict} — ${cCity} (CEP ${cCep})</div>
+        <div><strong>Pagamento escolhido:</strong> ${methodText}</div>
+        <div><strong>Total:</strong> <strong>${money(currentOrderBase.total)}</strong></div>
+        ${activePayMethod === "pix" ? `<div style="margin-top:8px; color:var(--gold-bright);">Use o código Pix copia e cola acima para concluir o pagamento.</div>` : ""}
+      `;
+      doneBox.classList.add("show");
+    });
 
     function exportCatalogCode() {
       const code = "const INITIAL_PRODUCTS = " + JSON.stringify(loadProducts(), null, 2) + ";";
       navigator.clipboard?.writeText(code);
-      alert("Código do catálogo copiado! Cole no lugar de INITIAL_PRODUCTS no GitHub para publicar suas fotos para todos os clientes.");
+      alert("Código do catálogo copiado! Cole no lugar de INITIAL_PRODUCTS no GitHub para publicar para todos os clientes.");
     }
 
     function renderProducts() {
@@ -857,7 +998,9 @@
       const filtered = term
         ? all.filter((item) =>
             item.name.toLowerCase().includes(term) ||
-            (item.description || "").toLowerCase().includes(term)
+            (item.description || "").toLowerCase().includes(term) ||
+            (item.colors || []).join(",").toLowerCase().includes(term) ||
+            (item.sizes || []).join(",").toLowerCase().includes(term)
           )
         : all;
 
@@ -869,6 +1012,9 @@
 
       grid.innerHTML = filtered.map((p) => {
         const photos = (p.photos && p.photos.length) ? p.photos : INITIAL_PRODUCTS[0].photos;
+        const sizes = (p.sizes && p.sizes.length) ? p.sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"];
+        const colors = (p.colors && p.colors.length) ? p.colors : ["Preto", "Off", "Vermelho"];
+
         const thumbs = photos.map((u, idx) => `
           <button
             type="button"
@@ -879,6 +1025,9 @@
             <img src="${u}" alt="${p.name} ângulo ${idx + 1}">
           </button>
         `).join("");
+
+        const sizeOptions = sizes.map((s) => `<option value="${s}">${s}</option>`).join("");
+        const colorOptions = colors.map((c) => `<option value="${c}">${c}</option>`).join("");
 
         const videoBlock = p.videoUrl
           ? `<div class="video-row">▶ <a href="${p.videoUrl}" target="_blank" rel="noopener">Ver vídeo do produto</a></div>`
@@ -897,6 +1046,17 @@
               <p class="prod-desc">${p.description || ""}</p>
               <div class="prod-price"><span>${money(p.price)}</span></div>
 
+              <div class="variants-row">
+                <div>
+                  <label for="color-${p.id}">Cor</label>
+                  <select id="color-${p.id}">${colorOptions}</select>
+                </div>
+                <div>
+                  <label for="size-${p.id}">Numeração</label>
+                  <select id="size-${p.id}">${sizeOptions}</select>
+                </div>
+              </div>
+
               <div class="freight-box">
                 <label for="cep-${p.id}" style="color:#141418; margin:0;">Calcular frete pelo CEP</label>
                 <div class="freight-controls">
@@ -909,7 +1069,7 @@
                     type="button"
                     class="btn-dark"
                     style="padding:8px 10px;"
-                    onclick="runFreight('${p.id}', '${p.name.replace(/'/g, "\\'")}', ${Number(p.price)})"
+                    onclick="runFreight('${p.id}', ${Number(p.price)})"
                   >
                     Calcular
                   </button>
@@ -918,25 +1078,7 @@
               </div>
 
               <div class="card-actions">
-                <button type="button" class="btn-gold" onclick="openCheckout('${p.id}')">Comprar (Pix, Crédito ou Débito)</button>
-                <a
-                  class="btn-dark"
-                  href="#"
-                  onclick="this.href = buildWhatsappWithMethod({
-                    id: '${p.id}',
-                    name: '${p.name.replace(/'/g, "\\'")}',
-                    price: ${Number(p.price)},
-                    total: ${Number(p.price)},
-                    cepLabel: (document.getElementById('cep-${p.id}')?.value || '').replace(/\\D/g, '').length === 8 ? document.getElementById('cep-${p.id}').value : '',
-                    modeLabel: (document.getElementById('mode-${p.id}')?.value || 'correios') === 'transportadora' ? 'Transportadora' : 'Correios',
-                    freightValor: 0,
-                    method: 'pix'
-                  });"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  Enviar pedido e frete no WhatsApp
-                </a>
+                <button type="button" class="btn-gold" onclick="openCheckout('${p.id}')">Comprar agora</button>
               </div>
             </div>
           </article>
@@ -948,7 +1090,14 @@
       e.preventDefault();
       const name = document.getElementById("pName").value.trim();
       const price = parseFloat(document.getElementById("pPrice").value);
-      const checkoutUrl = document.getElementById("pCheckout").value.trim();
+      const sizes = document.getElementById("pSizes").value
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      const colors = document.getElementById("pColors").value
+        .split(",")
+        .map((c) => c.trim())
+        .filter(Boolean);
       const videoUrl = document.getElementById("pVideo").value.trim();
       const description = document.getElementById("pDesc").value.trim();
 
@@ -963,7 +1112,8 @@
           id: "mb-" + Date.now(),
           name,
           price,
-          checkoutUrl,
+          sizes: sizes.length ? sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"],
+          colors: colors.length ? colors : ["Preto", "Off", "Vermelho"],
           videoUrl,
           photos: selectedGalleryImages,
           description
@@ -976,6 +1126,8 @@
       selectedGalleryImages = [];
       document.getElementById("galleryPreview").innerHTML = "";
       this.reset();
+      document.getElementById("pSizes").value = "34, 35, 36, 37, 38, 39, 40, 41, 42, 43";
+      document.getElementById("pColors").value = "Preto, Off, Vermelho";
       toggleAdmin();
     });
 
