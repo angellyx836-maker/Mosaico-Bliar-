@@ -3,41 +3,801 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mosaico Bliar — Loja Online</title>
-  <meta name="description" content="Catálogo oficial Mosaico Bliar. Conheça nossos produtos e novidades.">
+  <title>Mosaico Bliar — Loja Oficial</title>
+  <meta name="description" content="Mosaico Bliar. Veja vários ângulos e vídeo dos produtos, calcule o frete por CEP nos Correios ou Transportadora e compre direto.">
   <link rel="canonical" href="https://appbliar.com.br/">
   <style>
+    :root {
+      --black: #0a0a0c;
+      --black-2: #121216;
+      --black-3: #1b1b21;
+      --gold: #dfb63f;
+      --gold-bright: #f2cb4b;
+      --gold-dark: #a6821c;
+      --white: #ffffff;
+      --light-bg: #f5f5f7;
+      --text-dark: #141418;
+      --text-muted: #6b6b76;
+      --border-dark: #2a2a33;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: system-ui, -apple-system, sans-serif;
       margin: 0;
-      padding: 40px 20px;
-      background-color: #faf8f5;
-      color: #222;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--light-bg);
+      color: var(--text-dark);
+      padding-bottom: 74px;
+    }
+
+    /* Faixa superior de oferta e faixa dourada de envio */
+    .top-promo {
+      background: var(--black);
+      color: var(--white);
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .top-promo strong {
+      color: var(--gold-bright);
+    }
+
+    .shipping-strip {
+      background: var(--gold);
+      color: var(--black);
+      text-align: center;
+      padding: 7px 12px;
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    /* Cabeçalho principal preto com logo dourado */
+    header {
+      background: var(--black);
+      color: var(--white);
+      border-bottom: 1px solid rgba(223, 182, 63, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--white);
+    }
+
+    .logo-text-group {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+    }
+
+    .logo-main {
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: var(--white);
+    }
+
+    .logo-sub {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--gold-bright);
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-gold {
+      background: var(--gold-bright);
+      color: var(--black);
+      border: none;
+      border-radius: 8px;
+      padding: 9px 14px;
+      font-weight: 800;
+      font-size: 0.86rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-gold:hover {
+      background: #ffe066;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline-gold {
+      background: transparent;
+      color: var(--gold-bright);
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-weight: 700;
+      font-size: 0.84rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* Banner principal inspirado nas referências */
+    .hero {
+      position: relative;
+      background: linear-gradient(180deg, rgba(10,10,12,0.72) 0%, rgba(10,10,12,0.88) 100%),
+                  url("https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1200&q=80") center/cover no-repeat;
+      color: var(--white);
+      padding: 54px 18px;
       text-align: center;
     }
-    .container {
-      max-width: 600px;
+
+    .hero-content {
+      max-width: 720px;
       margin: 0 auto;
-      background: #fff;
-      padding: 32px 24px;
+    }
+
+    .hero-kicker {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 6vw, 3.1rem);
+      font-weight: 900;
+      color: var(--gold-bright);
+      line-height: 1.08;
+    }
+
+    .hero-pill {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      border: 1.5px solid var(--gold);
+      background: rgba(10, 10, 12, 0.65);
+      color: var(--white);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    /* Painel de cadastro rápido */
+    .admin-panel {
+      display: none;
+      background: var(--black-2);
+      color: var(--white);
+      border: 1.5px solid var(--gold);
       border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      padding: 20px;
+      margin-bottom: 24px;
     }
-    h1 {
-      margin-top: 0;
-      font-size: 28px;
+
+    .admin-panel.open {
+      display: block;
     }
-    p {
-      line-height: 1.6;
-      color: #555;
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      margin-bottom: 4px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #d0d0d8;
+      padding: 9px 11px;
+      font-size: 0.9rem;
+      background: var(--white);
+      color: var(--text-dark);
+    }
+
+    .admin-panel input,
+    .admin-panel select,
+    .admin-panel textarea {
+      background: var(--black-3);
+      color: var(--white);
+      border-color: var(--border-dark);
+    }
+
+    /* Barra de busca e título de seção */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--black);
+    }
+
+    .search-box {
+      max-width: 280px;
+      width: 100%;
+    }
+
+    /* Grade de produtos */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #e4e4ea;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gallery {
+      background: var(--black);
+      padding: 10px;
+    }
+
+    .main-img {
+      width: 100%;
+      height: 235px;
+      object-fit: cover;
+      border-radius: 10px;
+      display: block;
+      background: var(--black-2);
+    }
+
+    .thumbs {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      overflow-x: auto;
+    }
+
+    .thumb {
+      width: 54px;
+      height: 54px;
+      flex: 0 0 54px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      padding: 0;
+      background: var(--black-2);
+      cursor: pointer;
+    }
+
+    .thumb.active {
+      border-color: var(--gold-bright);
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-row {
+      margin-top: 8px;
+      font-size: 0.84rem;
+    }
+
+    .video-row a {
+      color: var(--gold-bright);
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    .card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .prod-name {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--black);
+    }
+
+    .prod-desc {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .prod-price {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--black);
+    }
+
+    .prod-price span {
+      background: var(--gold);
+      color: var(--black);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .freight-box {
+      background: #faf8f2;
+      border: 1px solid #eadc9f;
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .freight-controls {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 6px;
+    }
+
+    .freight-controls input,
+    .freight-controls select {
+      padding: 8px;
+      font-size: 0.84rem;
+    }
+
+    .freight-result {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--black);
+      min-height: 18px;
+    }
+
+    .card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .btn-dark {
+      background: var(--black);
+      color: var(--gold-bright);
+      border: 1px solid var(--black);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    /* Rodapé e barra inferior estilo app/loja mobile */
+    footer {
+      background: var(--black);
+      color: #c8c8d2;
+      text-align: center;
+      padding: 26px 16px;
+      font-size: 0.84rem;
+      margin-top: 32px;
+    }
+
+    footer strong {
+      color: var(--gold-bright);
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--white);
+      border-top: 1px solid #dcdce4;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      z-index: 40;
+    }
+
+    .bottom-nav a,
+    .bottom-nav button {
+      background: none;
+      border: none;
+      padding: 8px 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--black);
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      cursor: pointer;
     }
   </style>
 </head>
-<body>
-  <div class="container">
-    <h1>Mosaico Bliar</h1>
-    <p>Bem-vindo ao nosso catálogo oficial! Estamos preparando novidades especiais para você.</p>
+<body id="topo">
+  <div class="top-promo">
+    <span><strong>MOSAICO BLIAR:</strong> NOVIDADES E OFERTAS ESPECIAIS</span>
+    <span><strong>ENTREGA RÁPIDA</strong> • CORREIOS &amp; TRANSPORTADORA</span>
   </div>
+
+  <div class="shipping-strip">
+    Calcule o frete pelo CEP • Envio pelos Correios ou Transportadora
+  </div>
+
+  <header>
+    <div class="header-inner">
+      <a class="logo-wrap" href="#topo">
+        <!-- Logo SVG inicial dourado para Mosaico Bliar -->
+        <svg width="38" height="38" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <rect x="2" y="2" width="36" height="36" rx="9" stroke="#f2cb4b" stroke-width="2.2"/>
+          <polygon points="20,8 30,20 20,32 10,20" stroke="#f2cb4b" stroke-width="2"/>
+          <circle cx="20" cy="20" r="4" fill="#f2cb4b"/>
+        </svg>
+        <div class="logo-text-group">
+          <span class="logo-main">MOSAICO</span>
+          <span class="logo-sub">BLIAR</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <button class="btn-outline-gold" type="button" onclick="toggleAdmin()">+ Produto</button>
+        <a id="headerWhatsapp" class="btn-gold" href="#" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-kicker">Coleção Exclusiva</div>
+      <h1>Mosaico Bliar</h1>
+      <div class="hero-pill">Vários ângulos, vídeo, frete por CEP e compra direta</div>
+    </div>
+  </section>
+
+  <main class="container">
+    <section id="adminPanel" class="admin-panel">
+      <h2 style="margin:0 0 4px; color:var(--gold-bright); font-size:1.15rem;">Cadastrar novo produto no Mosaico Bliar</h2>
+      <p style="margin:0; font-size:0.84rem; color:#c8c8d2;">Coloque várias fotos separadas por vírgula (frente, lateral, interno, solado), link do vídeo e link do checkout.</p>
+      <form id="productForm" class="form-grid">
+        <div>
+          <label for="pName">Nome do produto</label>
+          <input id="pName" type="text" required placeholder="Ex.: Tênis Casual Mosaico">
+        </div>
+        <div>
+          <label for="pPrice">Preço (R$)</label>
+          <input id="pPrice" type="number" step="0.01" min="1" required placeholder="189.90">
+        </div>
+        <div>
+          <label for="pCheckout">Link de checkout / pagamento</label>
+          <input id="pCheckout" type="url" placeholder="https://checkout.infinitepay.io/...">
+        </div>
+        <div>
+          <label for="pVideo">Link do vídeo do produto</label>
+          <input id="pVideo" type="url" placeholder="https://youtube.com/shorts/... ou link do vídeo">
+        </div>
+        <div style="grid-column: 1 / -1;">
+          <label for="pPhotos">URLs das fotos (separadas por vírgula)</label>
+          <input id="pPhotos" type="text" required placeholder="https://.../foto1.jpg, https://.../foto2.jpg, https://.../solado.jpg">
+        </div>
+        <div style="grid-column: 1 / -1;">
+          <label for="pDesc">Descrição do produto</label>
+          <textarea id="pDesc" rows="2" placeholder="Detalhes do produto, solado, numeração e acabamento."></textarea>
+        </div>
+        <div style="grid-column: 1 / -1; display:flex; gap:10px; justify-content:flex-end;">
+          <button class="btn-outline-gold" type="button" onclick="toggleAdmin()">Fechar</button>
+          <button class="btn-gold" type="submit">Salvar na vitrine</button>
+        </div>
+      </form>
+    </section>
+
+    <div class="section-header" id="vitrine">
+      <h2 class="section-title">Destaques do Mosaico Bliar</h2>
+      <div class="search-box">
+        <input id="searchInput" type="search" placeholder="Buscar produto..." oninput="renderProducts()">
+      </div>
+    </div>
+
+    <section id="productsGrid" class="products-grid"></section>
+  </main>
+
+  <footer>
+    <strong>Mosaico Bliar</strong> • appbliar.com.br • Envio via Correios ou Transportadora
+  </footer>
+
+  <nav class="bottom-nav" aria-label="Navegação inferior">
+    <a href="#topo"><span>🏠</span><span>Início</span></a>
+    <a href="#vitrine"><span>🛍️</span><span>Loja</span></a>
+    <a id="bottomWhatsapp" href="#" target="_blank" rel="noopener"><span>💬</span><span>WhatsApp</span></a>
+    <button type="button" onclick="toggleAdmin()"><span>➕</span><span>Produto</span></button>
+  </nav>
+
+  <script>
+    // CONFIGURAÇÃO DA LOJA (edite aqui seu WhatsApp com DDI+DDD+número e seu link padrão de pagamento)
+    const CONFIG = {
+      whatsapp: "5511999999999",
+      checkoutPadrao: "https://appbliar.com.br/"
+    };
+
+    const INITIAL_PRODUCTS = [
+      {
+        id: "mb-1",
+        name: "Tênis Clássico Mosaico Bliar",
+        price: 189.90,
+        description: "Veja vários ângulos do produto (frente, lateral, interno e solado). Escolha Correios ou Transportadora calculando pelo CEP.",
+        videoUrl: "https://www.youtube.com/",
+        checkoutUrl: CONFIG.checkoutPadrao,
+        photos: [
+          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80"
+        ]
+      }
+    ];
+
+    const STORAGE_KEY = "mosaico_bliar_vitrine_v2";
+
+    function loadProducts() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length) return parsed;
+        }
+      } catch (err) {}
+      return INITIAL_PRODUCTS;
+    }
+
+    function saveProducts(items) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    }
+
+    function money(v) {
+      return Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function toggleAdmin() {
+      const panel = document.getElementById("adminPanel");
+      panel.classList.toggle("open");
+      if (panel.classList.contains("open")) {
+        panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function setPhoto(id, idx, url) {
+      const img = document.getElementById("img-" + id);
+      if (img) img.src = url;
+      const thumbs = document.getElementById("thumbs-" + id);
+      if (thumbs) {
+        [...thumbs.children].forEach((btn, i) => btn.classList.toggle("active", i === idx));
+      }
+    }
+
+    function calcFreight(cepInput, mode) {
+      const clean = (cepInput || "").replace(/\D/g, "");
+      if (clean.length !== 8) {
+        return { error: "Informe um CEP válido com 8 dígitos." };
+      }
+      const regionDigit = Number(clean[0]);
+      const correiosBase = [34, 28, 32, 36, 29, 24, 30, 22, 26, 35][regionDigit] || 29;
+      const transpBase = Math.max(19, correiosBase - 5);
+      const isTransp = mode === "transportadora";
+
+      return {
+        cep: clean.replace(/(\d{5})(\d{3})/, "$1-$2"),
+        modeLabel: isTransp ? "Transportadora" : "Correios",
+        valor: isTransp ? transpBase : correiosBase,
+        prazo: isTransp ? "3 a 7 dias úteis" : "4 a 9 dias úteis"
+      };
+    }
+
+    function runFreight(id, name, price) {
+      const cepEl = document.getElementById("cep-" + id);
+      const modeEl = document.getElementById("mode-" + id);
+      const outEl = document.getElementById("freight-out-" + id);
+
+      const res = calcFreight(cepEl.value, modeEl.value);
+      if (res.error) {
+        outEl.innerHTML = `<span style="color:#b91c1c;">${res.error}</span>`;
+        return;
+      }
+
+      const total = Number(price) + res.valor;
+      outEl.innerHTML = `${res.modeLabel} (${res.cep}): <strong>${money(res.valor)}</strong> • ${res.prazo} • Total: <strong>${money(total)}</strong>`;
+    }
+
+    function buildOrderWhatsapp(id, name, price) {
+      const cepVal = document.getElementById("cep-" + id)?.value || "";
+      const modeVal = document.getElementById("mode-" + id)?.value || "correios";
+      const res = calcFreight(cepVal, modeVal);
+
+      let msg = `Olá! Quero comprar *${name}* (${money(price)}) na *Mosaico Bliar*.`;
+      if (!res.error) {
+        msg += `\nCEP: *${res.cep}*\nOpção de envio: *${res.modeLabel}* (estimativa ${money(res.valor)}, ${res.prazo}).`;
+      }
+      return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+    }
+
+    function renderProducts() {
+      const term = (document.getElementById("searchInput")?.value || "").toLowerCase().trim();
+      const all = loadProducts();
+      const filtered = term
+        ? all.filter((item) =>
+            item.name.toLowerCase().includes(term) ||
+            (item.description || "").toLowerCase().includes(term)
+          )
+        : all;
+
+      const grid = document.getElementById("productsGrid");
+      if (!filtered.length) {
+        grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#555;">Nenhum produto encontrado para "${term}".</p>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map((p) => {
+        const photos = (p.photos && p.photos.length) ? p.photos : INITIAL_PRODUCTS[0].photos;
+        const thumbs = photos.map((u, idx) => `
+          <button
+            type="button"
+            class="thumb ${idx === 0 ? "active" : ""}"
+            onclick="setPhoto('${p.id}', ${idx}, '${u.replace(/'/g, "\\'")}')"
+            aria-label="Foto ${idx + 1} de ${p.name}"
+          >
+            <img src="${u}" alt="${p.name} ângulo ${idx + 1}">
+          </button>
+        `).join("");
+
+        const videoBlock = p.videoUrl
+          ? `<div class="video-row">▶ <a href="${p.videoUrl}" target="_blank" rel="noopener">Ver vídeo do produto</a></div>`
+          : "";
+
+        const buyUrl = p.checkoutUrl || CONFIG.checkoutPadrao;
+
+        return `
+          <article class="card">
+            <div class="gallery">
+              <img id="img-${p.id}" class="main-img" src="${photos[0]}" alt="${p.name}">
+              <div id="thumbs-${p.id}" class="thumbs">${thumbs}</div>
+              ${videoBlock}
+            </div>
+            <div class="card-body">
+              <h3 class="prod-name">${p.name}</h3>
+              <p class="prod-desc">${p.description || ""}</p>
+              <div class="prod-price"><span>${money(p.price)}</span></div>
+
+              <div class="freight-box">
+                <label for="cep-${p.id}" style="color:#141418; margin:0;">Calcular frete pelo CEP</label>
+                <div class="freight-controls">
+                  <input id="cep-${p.id}" type="text" maxlength="9" placeholder="00000-000">
+                  <select id="mode-${p.id}" aria-label="Escolha Correios ou Transportadora">
+                    <option value="correios">Correios</option>
+                    <option value="transportadora">Transportadora</option>
+                  </select>
+                  <button
+                    type="button"
+                    class="btn-dark"
+                    style="padding:8px 10px;"
+                    onclick="runFreight('${p.id}', '${p.name.replace(/'/g, "\\'")}', ${Number(p.price)})"
+                  >
+                    Calcular
+                  </button>
+                </div>
+                <div id="freight-out-${p.id}" class="freight-result"></div>
+              </div>
+
+              <div class="card-actions">
+                <a class="btn-gold" href="${buyUrl}" target="_blank" rel="noopener">Comprar agora</a>
+                <a
+                  class="btn-dark"
+                  href="#"
+                  onclick="this.href = buildOrderWhatsapp('${p.id}', '${p.name.replace(/'/g, "\\'")}', ${Number(p.price)});"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Enviar pedido e frete no WhatsApp
+                </a>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    document.getElementById("productForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = document.getElementById("pName").value.trim();
+      const price = parseFloat(document.getElementById("pPrice").value);
+      const checkoutUrl = document.getElementById("pCheckout").value.trim() || CONFIG.checkoutPadrao;
+      const videoUrl = document.getElementById("pVideo").value.trim();
+      const photos = document.getElementById("pPhotos").value
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      const description = document.getElementById("pDesc").value.trim();
+
+      if (!name || isNaN(price) || !photos.length) return;
+
+      const updated = [
+        {
+          id: "mb-" + Date.now(),
+          name,
+          price,
+          checkoutUrl,
+          videoUrl,
+          photos,
+          description
+        },
+        ...loadProducts()
+      ];
+
+      saveProducts(updated);
+      renderProducts();
+      this.reset();
+      toggleAdmin();
+    });
+
+    const waBase = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent("Olá! Vim pela loja Mosaico Bliar.")}`;
+    document.getElementById("headerWhatsapp").href = waBase;
+    document.getElementById("bottomWhatsapp").href = waBase;
+
+    renderProducts();
+  </script>
 </body>
 </html>
-
