@@ -1,1150 +1,268 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mosaico Bliar — Loja Oficial</title>
-  <meta name="description" content="Mosaico Bliar. Escolha cor e numeração, calcule o frete por CEP nos Correios ou Transportadora e finalize sua compra via Pix, Crédito ou Débito.">
-  <link rel="canonical" href="https://appbliar.com.br/">
   <style>
     :root {
-      --black: #0a0a0c;
-      --black-2: #121216;
-      --black-3: #1b1b21;
-      --gold: #dfb63f;
-      --gold-bright: #f2cb4b;
-      --white: #ffffff;
-      --light-bg: #f5f5f7;
-      --text-dark: #141418;
-      --text-muted: #6b6b76;
-      --border-dark: #2a2a33;
-      --success: #16a34a;
+      --ameixa-escuro: #3B1332;
+      --ameixa-medio: #5C1F4E;
+      --ameixa-claro: #8A3676;
+      --ameixa-suave: #F9F2F7;
+      --dourado: #D4AF37;
+      --texto: #241822;
+      --texto-suave: #6B5867;
+      --branco: #FFFFFF;
+      --borda: #E6D5E2;
+      --sucesso: #1E7E34;
     }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: var(--ameixa-suave); color: var(--texto); padding-bottom: 80px; }
 
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--light-bg);
-      color: var(--text-dark);
-      padding-bottom: 76px;
-    }
-
-    .top-promo {
-      background: var(--black);
-      color: var(--white);
-      padding: 8px 14px;
-      font-size: 0.78rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .top-promo strong { color: var(--gold-bright); }
-
-    .shipping-strip {
-      background: var(--gold);
-      color: var(--black);
+    .top-bar {
+      background: linear-gradient(90deg, var(--ameixa-escuro), var(--ameixa-medio));
+      color: var(--branco);
       text-align: center;
-      padding: 7px 12px;
-      font-size: 0.84rem;
-      font-weight: 700;
+      padding: 8px 12px;
+      font-size: 0.85rem;
     }
+    .top-bar strong { color: #F5D77F; }
 
     header {
-      background: var(--black);
-      color: var(--white);
-      border-bottom: 1px solid rgba(223, 182, 63, 0.25);
+      background: var(--branco);
+      border-bottom: 2px solid var(--borda);
+      padding: 14px 20px;
       position: sticky;
       top: 0;
-      z-index: 30;
-    }
-
-    .header-inner {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 12px 16px;
+      z-index: 100;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 12px;
-    }
-
-    .logo-wrap {
-      display: flex;
       align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--white);
+      box-shadow: 0 2px 10px rgba(59, 19, 50, 0.08);
     }
+    .logo { font-size: 1.4rem; font-weight: 800; color: var(--ameixa-escuro); text-transform: uppercase; letter-spacing: 1px; }
+    .logo span { color: var(--ameixa-claro); }
+    .header-actions { display: flex; gap: 10px; align-items: center; }
 
-    .logo-text-group {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.05;
-    }
-
-    .logo-main {
-      font-size: 1.15rem;
-      font-weight: 900;
-      letter-spacing: 1px;
-      color: var(--white);
-    }
-
-    .logo-sub {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--gold-bright);
-      text-transform: uppercase;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-gold {
-      background: var(--gold-bright);
-      color: var(--black);
+    .btn {
       border: none;
       border-radius: 8px;
-      padding: 10px 14px;
-      font-weight: 800;
-      font-size: 0.88rem;
+      padding: 10px 16px;
+      font-weight: 600;
       cursor: pointer;
-      text-decoration: none;
+      transition: 0.2s;
+      font-size: 0.9rem;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 6px;
-    }
-
-    .btn-outline-gold {
-      background: transparent;
-      color: var(--gold-bright);
-      border: 1px solid var(--gold);
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-weight: 700;
-      font-size: 0.84rem;
-      cursor: pointer;
       text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
     }
+    .btn-primary { background: var(--ameixa-escuro); color: var(--branco); }
+    .btn-primary:hover { background: var(--ameixa-medio); }
+    .btn-outline { background: transparent; border: 1.5px solid var(--ameixa-escuro); color: var(--ameixa-escuro); }
+    .btn-outline:hover { background: var(--ameixa-suave); }
+    .btn-whats { background: #25D366; color: var(--branco); }
+    .btn-whats:hover { background: #1EBE5D; }
+    .btn-danger { background: #C82333; color: var(--branco); padding: 6px 10px; font-size: 0.8rem; }
 
     .hero {
-      position: relative;
-      min-height: 240px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(180deg, rgba(10,10,12,0.28) 0%, rgba(10,10,12,0.42) 100%),
-                  url("https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1200&q=85") center/cover no-repeat;
-      filter: brightness(1.12) contrast(1.04);
-      color: var(--white);
-      padding: 52px 18px;
+      background: linear-gradient(135deg, var(--ameixa-escuro) 0%, var(--ameixa-medio) 100%);
+      color: var(--branco);
+      padding: 36px 20px;
       text-align: center;
     }
+    .hero h1 { font-size: 1.9rem; margin-bottom: 8px; }
+    .hero p { color: #F0DCE9; max-width: 600px; margin: 0 auto 16px; font-size: 1rem; }
+    .badges { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; font-size: 0.85rem; }
+    .badge { background: rgba(255,255,255,0.14); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.25); }
 
-    .hero-content { max-width: 720px; margin: 0 auto; }
+    .container { max-width: 1150px; margin: 24px auto; padding: 0 16px; }
+    .section-title { font-size: 1.4rem; color: var(--ameixa-escuro); margin-bottom: 18px; border-left: 4px solid var(--ameixa-claro); padding-left: 10px; }
 
-    .hero h1 {
-      margin: 0;
-      font-size: clamp(2.1rem, 6.5vw, 3.2rem);
-      font-weight: 900;
-      color: var(--gold-bright);
-      line-height: 1.08;
-      text-shadow: 0 3px 16px rgba(0, 0, 0, 0.78);
-    }
-
-    .container { max-width: 1120px; margin: 0 auto; padding: 24px 16px; }
-
-    .admin-panel {
-      display: none;
-      background: var(--black-2);
-      color: var(--white);
-      border: 1.5px solid var(--gold);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 24px;
-    }
-
-    .admin-panel.open { display: block; }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    label {
-      display: block;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--gold-bright);
-      margin-bottom: 4px;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      border-radius: 8px;
-      border: 1px solid #d0d0d8;
-      padding: 9px 11px;
-      font-size: 0.9rem;
-      background: var(--white);
-      color: var(--text-dark);
-    }
-
-    .admin-panel input,
-    .admin-panel select,
-    .admin-panel textarea {
-      background: var(--black-3);
-      color: var(--white);
-      border-color: var(--border-dark);
-    }
-
-    .gallery-picker-box {
-      border: 1.5px dashed var(--gold);
-      border-radius: 12px;
-      padding: 14px;
-      background: rgba(242, 203, 75, 0.06);
-      text-align: center;
-    }
-
-    .preview-strip {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-      justify-content: center;
-    }
-
-    .preview-strip img {
-      width: 64px;
-      height: 64px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 1.5px solid var(--gold);
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-
-    .section-title { margin: 0; font-size: 1.35rem; font-weight: 800; color: var(--black); }
-    .search-box { max-width: 280px; width: 100%; }
-
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(305px, 1fr));
-      gap: 20px;
-    }
-
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 20px; }
     .card {
-      background: var(--white);
-      border-radius: 16px;
+      background: var(--branco);
+      border: 1px solid var(--borda);
+      border-radius: 14px;
       overflow: hidden;
-      border: 1px solid #e4e4ea;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
       display: flex;
       flex-direction: column;
+      box-shadow: 0 4px 12px rgba(59, 19, 50, 0.05);
     }
+    .card-img { width: 100%; height: 240px; object-fit: cover; background: #EFE4EC; }
+    .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+    .card-title { font-size: 1.1rem; font-weight: 700; color: var(--ameixa-escuro); margin-bottom: 6px; }
+    .card-desc { font-size: 0.85rem; color: var(--texto-suave); margin-bottom: 12px; flex: 1; }
+    .card-price { font-size: 1.35rem; font-weight: 800; color: var(--ameixa-medio); margin-bottom: 4px; }
+    .card-installments { font-size: 0.8rem; color: var(--sucesso); margin-bottom: 12px; font-weight: 600; }
 
-    .gallery { background: var(--black); padding: 10px; position: relative; }
-
-    .delete-prod-btn {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      background: rgba(10,10,12,0.82);
-      color: #fca5a5;
-      border: 1px solid #ef4444;
-      border-radius: 8px;
-      padding: 4px 8px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .main-img {
+    .selectors { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+    .selectors label { font-size: 0.78rem; font-weight: 700; color: var(--texto-suave); text-transform: uppercase; }
+    .selectors select {
       width: 100%;
-      height: 235px;
-      object-fit: cover;
-      border-radius: 10px;
-      display: block;
-      background: var(--black-2);
-    }
-
-    .thumbs { display: flex; gap: 8px; margin-top: 8px; overflow-x: auto; }
-
-    .thumb {
-      width: 56px;
-      height: 56px;
-      flex: 0 0 56px;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 2px solid transparent;
-      padding: 0;
-      background: var(--black-2);
-      cursor: pointer;
-    }
-
-    .thumb.active { border-color: var(--gold-bright); }
-    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .video-row { margin-top: 8px; font-size: 0.84rem; }
-    .video-row a { color: var(--gold-bright); font-weight: 700; text-decoration: underline; }
-
-    .card-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-    .prod-name { margin: 0; font-size: 1.12rem; font-weight: 800; color: var(--black); }
-    .prod-desc { margin: 0; font-size: 0.88rem; color: var(--text-muted); }
-    .prod-price { font-size: 1.35rem; font-weight: 900; }
-    .prod-price span { background: var(--gold); color: var(--black); padding: 2px 8px; border-radius: 6px; }
-
-    .variants-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .variants-row label {
-      color: var(--text-dark);
-      font-size: 0.78rem;
-      margin-bottom: 3px;
-    }
-
-    .variants-row select {
       padding: 8px;
-      font-size: 0.84rem;
+      border: 1px solid var(--borda);
+      border-radius: 6px;
+      background: var(--ameixa-suave);
+      color: var(--texto);
+      font-weight: 600;
     }
 
-    .freight-box {
-      background: #faf8f2;
-      border: 1px solid #eadc9f;
-      border-radius: 10px;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .freight-controls { display: grid; grid-template-columns: 1fr auto auto; gap: 6px; }
-    .freight-controls input, .freight-controls select { padding: 8px; font-size: 0.84rem; }
-    .freight-result { font-size: 0.84rem; font-weight: 600; color: var(--black); min-height: 18px; }
-
-    .card-actions { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
-
-    .btn-dark {
-      background: var(--black);
-      color: var(--gold-bright);
-      border: 1px solid var(--black);
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-weight: 700;
-      font-size: 0.88rem;
-      cursor: pointer;
-      text-decoration: none;
-      text-align: center;
-    }
-
-    /* Checkout completo na tela */
-    .modal-backdrop {
+    .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.82);
-      z-index: 60;
-      align-items: center;
-      justify-content: center;
-      padding: 14px;
-    }
-
-    .modal-backdrop.open { display: flex; }
-
-    .modal-card {
-      background: var(--black-2);
-      color: var(--white);
-      border: 1.5px solid var(--gold);
-      border-radius: 18px;
-      max-width: 490px;
-      width: 100%;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      max-height: 94vh;
+      background: rgba(25, 8, 21, 0.75);
+      z-index: 999;
       overflow-y: auto;
+      padding: 20px 12px;
     }
-
-    .checkout-section {
-      background: var(--black-3);
-      border: 1px solid var(--border-dark);
-      border-radius: 12px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .modal-content {
+      background: var(--branco);
+      max-width: 540px;
+      margin: 20px auto;
+      border-radius: 14px;
+      padding: 24px;
+      position: relative;
+      border-top: 6px solid var(--ameixa-escuro);
     }
-
-    .checkout-section input {
-      background: var(--black-2);
-      color: var(--white);
-      border-color: #3a3a46;
-      padding: 9px 10px;
-      font-size: 0.86rem;
-    }
-
-    .two-cols {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .method-tabs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-    }
-
-    .method-btn {
-      background: var(--black-3);
-      color: var(--white);
-      border: 1px solid var(--border-dark);
-      border-radius: 8px;
-      padding: 9px 6px;
-      font-size: 0.78rem;
-      font-weight: 700;
+    .close-btn {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
       cursor: pointer;
-      text-align: center;
+      color: var(--texto-suave);
     }
-
-    .method-btn.active {
-      background: var(--gold-bright);
-      color: var(--black);
-      border-color: var(--gold-bright);
-    }
-
-    .pix-code-area {
-      background: var(--black-2);
-      color: var(--gold-bright);
-      border: 1px dashed var(--gold);
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; color: var(--ameixa-escuro); }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--borda);
       border-radius: 8px;
-      padding: 9px;
-      font-size: 0.8rem;
-      word-break: break-all;
-      font-family: monospace;
+      font-size: 0.95rem;
     }
 
-    .order-done-box {
-      display: none;
-      background: rgba(22, 163, 74, 0.16);
-      border: 1.5px solid var(--success);
-      border-radius: 12px;
-      padding: 14px;
-      font-size: 0.88rem;
-      line-height: 1.5;
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--borda);
+      font-size: 0.9rem;
     }
-
-    .order-done-box.show { display: block; }
-
-    footer {
-      background: var(--black);
-      color: #c8c8d2;
-      text-align: center;
-      padding: 26px 16px;
-      font-size: 0.84rem;
-      margin-top: 32px;
+    .frete-box { background: var(--ameixa-suave); padding: 12px; border-radius: 8px; margin: 14px 0; border: 1px solid var(--borda); }
+    .frete-row { display: flex; gap: 8px; margin-top: 6px; }
+    .resumo-total { font-size: 1.2rem; font-weight: 800; color: var(--ameixa-escuro); text-align: right; margin: 14px 0; }
+    .security-note {
+      background: #EEFAF1;
+      border: 1px solid #B7E4C7;
+      color: #1B4332;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      margin-bottom: 14px;
     }
-
-    footer strong { color: var(--gold-bright); }
 
     .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: var(--white);
-      border-top: 1px solid #dcdce4;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      z-index: 40;
+      background: var(--ameixa-escuro);
+      color: var(--branco);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 100;
     }
-
-    .bottom-nav a, .bottom-nav button {
+    .bottom-nav button, .bottom-nav a {
       background: none;
       border: none;
-      padding: 8px 4px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--black);
+      color: var(--branco);
+      font-size: 0.85rem;
       text-decoration: none;
+      cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 2px;
-      cursor: pointer;
     }
   </style>
 </head>
-<body id="topo">
-  <div class="top-promo">
-    <span><strong>MOSAICO BLIAR:</strong> NOVIDADES E OFERTAS ESPECIAIS</span>
-    <span><strong>PIX, CRÉDITO OU DÉBITO</strong> • CORREIOS &amp; TRANSPORTADORA</span>
-  </div>
+<body>
 
-  <div class="shipping-strip">
-    Calcule o frete pelo CEP • Envio pelos Correios ou Transportadora
+  <div class="top-bar">
+    <strong>MOSAICO BLIAR:</strong> NOVIDADES E OFERTAS ESPECIAIS • <strong>PIX, CRÉDITO OU DÉBITO VIA MERCADO PAGO</strong>
   </div>
 
   <header>
-    <div class="header-inner">
-      <a class="logo-wrap" href="#topo">
-        <svg width="38" height="38" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-          <rect x="2" y="2" width="36" height="36" rx="9" stroke="#f2cb4b" stroke-width="2.2"/>
-          <polygon points="20,8 30,20 20,32 10,20" stroke="#f2cb4b" stroke-width="2"/>
-          <circle cx="20" cy="20" r="4" fill="#f2cb4b"/>
-        </svg>
-        <div class="logo-text-group">
-          <span class="logo-main">MOSAICO</span>
-          <span class="logo-sub">BLIAR</span>
-        </div>
-      </a>
-
-      <div class="header-actions">
-        <button class="btn-outline-gold" type="button" onclick="toggleAdmin()">+ Produto</button>
-        <a id="headerWhatsapp" class="btn-gold" href="#" target="_blank" rel="noopener">WhatsApp</a>
-      </div>
+    <div class="logo">Mosaico <span>Bliar</span></div>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="abrirCarrinho()">🛍 Carrinho (<span id="cart-count">0</span>)</button>
+      <a class="btn btn-whats" href="https://wa.me" target="_blank">💬 WhatsApp</a>
     </div>
   </header>
 
   <section class="hero">
-    <div class="hero-content">
-      <h1>Mosaico Bliar</h1>
+    <h1>Estilo e Conforto em Cada Passo</h1>
+    <p>Escolha seu modelo, numeração e cor. Pague com segurança no Pix, Cartão de Débito ou Crédito parcelado.</p>
+    <div class="badges">
+      <span class="badge">🚚 Envio via Correios e Transportadora</span>
+      <span class="badge">🔒 Pagamento 100% Seguro Mercado Pago</span>
     </div>
   </section>
 
   <main class="container">
-    <section id="adminPanel" class="admin-panel">
-      <h2 style="margin:0 0 4px; color:var(--gold-bright); font-size:1.15rem;">Cadastrar produto com cores e numeração</h2>
-      <p style="margin:0; font-size:0.84rem; color:#c8c8d2;">Escolha as fotos da galeria, coloque as numerações (ex.: 34, 35, 36, 37, 38, 39, 40, 41, 42, 43) e as cores (ex.: Preto, Off, Vermelho).</p>
-
-      <form id="productForm" class="form-grid">
-        <div style="grid-column: 1 / -1;" class="gallery-picker-box">
-          <label for="pGallery" style="font-size:0.92rem; margin-bottom:8px;">📸 Escolher fotos da galeria (até 5 fotos)</label>
-          <input id="pGallery" type="file" accept="image/*" multiple required>
-          <div id="galleryPreview" class="preview-strip"></div>
-        </div>
-
-        <div>
-          <label for="pName">Nome do produto</label>
-          <input id="pName" type="text" required placeholder="Ex.: Tênis Casual Mosaico">
-        </div>
-        <div>
-          <label for="pPrice">Preço (R$)</label>
-          <input id="pPrice" type="number" step="0.01" min="1" required placeholder="189.90">
-        </div>
-        <div>
-          <label for="pSizes">Numerações disponíveis (separadas por vírgula)</label>
-          <input id="pSizes" type="text" value="34, 35, 36, 37, 38, 39, 40, 41, 42, 43" required placeholder="34, 35, 36, 37, 38, 39, 40, 41, 42, 43">
-        </div>
-        <div>
-          <label for="pColors">Cores disponíveis (separadas por vírgula)</label>
-          <input id="pColors" type="text" value="Preto, Off, Vermelho" required placeholder="Preto, Off, Vermelho">
-        </div>
-        <div style="grid-column: 1 / -1;">
-          <label for="pVideo">Link do vídeo (YouTube ou TikTok)</label>
-          <input id="pVideo" type="url" placeholder="https://youtube.com/shorts/...">
-        </div>
-        <div style="grid-column: 1 / -1;">
-          <label for="pDesc">Descrição e detalhes</label>
-          <textarea id="pDesc" rows="2" placeholder="Detalhes do material, solado e acabamento."></textarea>
-        </div>
-
-        <div style="grid-column: 1 / -1; display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap;">
-          <button class="btn-outline-gold" type="button" onclick="exportCatalogCode()">Copiar catálogo p/ publicar no GitHub</button>
-          <div style="display:flex; gap:8px;">
-            <button class="btn-outline-gold" type="button" onclick="toggleAdmin()">Fechar</button>
-            <button class="btn-gold" type="submit">Salvar produto</button>
-          </div>
-        </div>
-      </form>
-    </section>
-
-    <div class="section-header" id="vitrine">
-      <h2 class="section-title">Destaques do Mosaico Bliar</h2>
-      <div class="search-box">
-        <input id="searchInput" type="search" placeholder="Buscar produto..." oninput="renderProducts()">
-      </div>
-    </div>
-
-    <section id="productsGrid" class="products-grid"></section>
+    <h2 class="section-title">Destaques do Mosaico Bliar</h2>
+    <div class="grid" id="lista-produtos"></div>
   </main>
 
-  <!-- Checkout completo direto no site -->
-  <div id="checkoutModal" class="modal-backdrop" role="dialog" aria-modal="true">
-    <div class="modal-card">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h3 style="margin:0; color:var(--gold-bright);">Finalizar Compra</h3>
-        <button type="button" class="btn-outline-gold" style="padding:4px 10px;" onclick="closeCheckout()">X</button>
+  <!-- Modal Carrinho e Pagamento Seguro -->
+  <div class="modal" id="modal-carrinho">
+    <div class="modal-content">
+      <button class="close-btn" onclick="fecharModal('modal-carrinho')">&times;</button>
+      <h2 style="color: var(--ameixa-escuro); margin-bottom: 12px;">Finalizar Compra</h2>
+
+      <div id="itens-carrinho"></div>
+
+      <div class="frete-box">
+        <label style="font-size: 0.85rem; font-weight: 700; color: var(--ameixa-escuro);">Calcule o frete pelo CEP:</label>
+        <div class="frete-row">
+          <input type="text" id="cep-cliente" placeholder="00000-000" maxlength="9" style="flex:1; padding:8px; border:1px solid var(--borda); border-radius:6px;" />
+          <button class="btn btn-primary" onclick="calcularFrete()">Calcular</button>
+        </div>
+        <p id="resultado-frete" style="font-size: 0.85rem; margin-top: 6px; color: var(--sucesso); font-weight: 600;"></p>
       </div>
 
-      <div id="checkoutSummary" style="font-size:0.9rem; line-height:1.45;"></div>
+      <div class="form-group">
+        <label>Nome completo para entrega</label>
+        <input type="text" id="nome-cliente" placeholder="Digite seu nome completo" />
+      </div>
+      <div class="form-group">
+        <label>Endereço completo (Rua, Número, Bairro, Cidade/UF)</label>
+        <input type="text" id="endereco-cliente" placeholder="Ex.: Rua das Flores, 123 - Centro - São Paulo/SP" />
+      </div>
 
-      <form id="checkoutForm" style="display:flex; flex-direction:column; gap:10px;">
-        <div class="checkout-section">
-          <div style="font-size:0.8rem; font-weight:800; color:var(--gold-bright);">1. DADOS E ENDEREÇO DE ENTREGA</div>
-          <div>
-            <label for="cName">Nome completo do cliente</label>
-            <input id="cName" type="text" required placeholder="Nome completo">
-          </div>
-          <div class="two-cols">
-            <div>
-              <label for="cCpf">CPF</label>
-              <input id="cCpf" type="text" required placeholder="000.000.000-00">
-            </div>
-            <div>
-              <label for="cCep">CEP</label>
-              <input id="cCep" type="text" required placeholder="00000-000">
-            </div>
-          </div>
-          <div>
-            <label for="cStreet">Rua / Avenida e Número</label>
-            <input id="cStreet" type="text" required placeholder="Rua exemplo, 123">
-          </div>
-          <div class="two-cols">
-            <div>
-              <label for="cDistrict">Bairro</label>
-              <input id="cDistrict" type="text" required placeholder="Bairro">
-            </div>
-            <div>
-              <label for="cCity">Cidade / UF</label>
-              <input id="cCity" type="text" required placeholder="São Paulo - SP">
-            </div>
-          </div>
-        </div>
+      <div class="resumo-total">
+        Total: R$ <span id="total-compra">0,00</span>
+      </div>
 
-        <div class="checkout-section">
-          <div style="font-size:0.8rem; font-weight:800; color:var(--gold-bright);">2. ESCOLHA A FORMA DE PAGAMENTO</div>
-          <div class="method-tabs">
-            <button type="button" id="tab-pix" class="method-btn active" onclick="setPayTab('pix')">Pix</button>
-            <button type="button" id="tab-credito" class="method-btn" onclick="setPayTab('credito')">Cartão Crédito</button>
-            <button type="button" id="tab-debito" class="method-btn" onclick="setPayTab('debito')">Cartão Débito</button>
-          </div>
+      <div class="security-note">
+        🔒 <strong>Ambiente Seguro:</strong> Nenhum dado do seu cartão é digitado neste site. Ao clicar abaixo, você será levado diretamente para o ambiente seguro do <strong>Mercado Pago</strong> para pagar no Pix, Débito ou Crédito parcelado.
+      </div>
 
-          <!-- Painel Pix -->
-          <div id="panel-pix" style="display:flex; flex-direction:column; gap:8px;">
-            <div style="font-size:0.84rem;"><strong>Recebedor:</strong> <span id="pixReceiverLabel"></span> • <strong>Banco:</strong> <span id="pixBankLabel"></span></div>
-            <label style="margin:0;">Código Pix Copia e Cola para pagar:</label>
-            <div id="pixCopiaEColaBox" class="pix-code-area"></div>
-            <button type="button" class="btn-outline-gold" onclick="copyPixCode()">Copiar código Pix</button>
-          </div>
-
-          <!-- Painel Cartão de Crédito / Débito -->
-          <div id="panel-card" style="display:none; flex-direction:column; gap:8px;">
-            <div id="cardMethodTitle" style="font-size:0.82rem; font-weight:800; color:var(--gold-bright);">DADOS DO CARTÃO</div>
-            <div>
-              <label for="cardHolder">Nome impresso no cartão</label>
-              <input id="cardHolder" type="text" placeholder="Como está no cartão">
-            </div>
-            <div>
-              <label for="cardCpf">CPF do titular</label>
-              <input id="cardCpf" type="text" placeholder="000.000.000-00">
-            </div>
-            <div>
-              <label for="cardNumber">Número do cartão</label>
-              <input id="cardNumber" type="text" inputmode="numeric" placeholder="0000 0000 0000 0000">
-            </div>
-            <div class="two-cols">
-              <div>
-                <label for="cardExpiry">Validade (MM/AA)</label>
-                <input id="cardExpiry" type="text" placeholder="12/28">
-              </div>
-              <div>
-                <label for="cardCvv">Código de segurança (CVV)</label>
-                <input id="cardCvv" type="text" inputmode="numeric" maxlength="4" placeholder="123">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <button type="submit" class="btn-gold" style="padding:12px;">Finalizar compra</button>
-      </form>
-
-      <div id="orderDoneBox" class="order-done-box"></div>
+      <button class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1rem; padding: 14px;" onclick="irParaPagamento()">
+        💳 Pagar Agora com Mercado Pago
+      </button>
     </div>
   </div>
 
-  <footer>
-    <strong>Mosaico Bliar</strong> • appbliar.com.br • Pix, Crédito ou Débito • Correios ou Transportadora
-  </footer>
-
-  <nav class="bottom-nav" aria-label="Navegação inferior">
-    <a href="#topo"><span>🏠</span><span>Início</span></a>
-    <a href="#vitrine"><span>🛍️</span><span>Loja</span></a>
-    <a id="bottomWhatsapp" href="#" target="_blank" rel="noopener"><span>💬</span><span>WhatsApp</span></a>
-    <button type="button" onclick="toggleAdmin()"><span>➕</span><span>Produto</span></button>
-  </nav>
-
-  <script>
-    // CONFIGURAÇÃO DA LOJA (coloque aqui seu WhatsApp e o código Pix / chave que você vai usar)
-    const CONFIG = {
-      whatsapp: "5511999999999",
-      pixReceiver: "Mosaico Bliar",
-      pixBank: "Nubank",
-      pixCopiaECola: "COLE-AQUI-SEU-CODIGO-PIX-COPIA-E-COLA-OU-CHAVE-PIX"
-    };
-
-    const INITIAL_PRODUCTS = [
-      {
-        id: "mb-1",
-        name: "Tênis Casual Off Mosaico Bliar",
-        price: 189.90,
-        sizes: ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"],
-        colors: ["Preto", "Off", "Vermelho"],
-        description: "Escolha cor e numeração, veja vários ângulos e vídeo, calcule o frete pelo CEP e finalize direto no site.",
-        videoUrl: "https://www.youtube.com/",
-        photos: [
-          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
-          "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=800&q=80",
-          "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80"
-        ]
-      }
-    ];
-
-    const STORAGE_KEY = "mosaico_bliar_vitrine_v5";
-    let selectedGalleryImages = [];
-    let activePayMethod = "pix";
-    let currentOrderBase = null;
-
-    function loadProducts() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed) && parsed.length) return parsed;
-        }
-      } catch (err) {}
-      return INITIAL_PRODUCTS;
-    }
-
-    function saveProducts(items) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-      } catch (err) {
-        alert("Memória do navegador cheia. Remova algum produto antigo ou use menos fotos.");
-      }
-    }
-
-    function money(v) {
-      return Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-    }
-
-    function toggleAdmin() {
-      const panel = document.getElementById("adminPanel");
-      panel.classList.toggle("open");
-      if (panel.classList.contains("open")) {
-        panel.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-
-    function compressImageFile(file, maxSize = 800, quality = 0.76) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          const img = new Image();
-          img.onload = () => {
-            let w = img.width;
-            let h = img.height;
-            if (w > maxSize || h > maxSize) {
-              if (w > h) {
-                h = Math.round((h * maxSize) / w);
-                w = maxSize;
-              } else {
-                w = Math.round((w * maxSize) / h);
-                h = maxSize;
-              }
-            }
-            const canvas = document.createElement("canvas");
-            canvas.width = w;
-            canvas.height = h;
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0, w, h);
-            resolve(canvas.toDataURL("image/jpeg", quality));
-          };
-          img.onerror = reject;
-          img.src = ev.target.result;
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    document.getElementById("pGallery").addEventListener("change", async function (e) {
-      const files = [...(e.target.files || [])].slice(0, 5);
-      const preview = document.getElementById("galleryPreview");
-      preview.innerHTML = "<span style='color:var(--gold-bright); font-size:0.84rem;'>Carregando fotos da galeria...</span>";
-      selectedGalleryImages = [];
-
-      for (const f of files) {
-        const compressed = await compressImageFile(f);
-        selectedGalleryImages.push(compressed);
-      }
-
-      preview.innerHTML = selectedGalleryImages
-        .map((src) => `<img src="${src}" alt="Prévia da foto">`)
-        .join("");
-    });
-
-    function setPhoto(id, idx, url) {
-      const img = document.getElementById("img-" + id);
-      if (img) img.src = url;
-      const thumbs = document.getElementById("thumbs-" + id);
-      if (thumbs) {
-        [...thumbs.children].forEach((btn, i) => btn.classList.toggle("active", i === idx));
-      }
-    }
-
-    function deleteProduct(id) {
-      const filtered = loadProducts().filter((p) => p.id !== id);
-      saveProducts(filtered.length ? filtered : INITIAL_PRODUCTS);
-      renderProducts();
-    }
-
-    function calcFreight(cepInput, mode) {
-      const clean = (cepInput || "").replace(/\D/g, "");
-      if (clean.length !== 8) {
-        return { error: "Informe um CEP válido com 8 dígitos." };
-      }
-      const regionDigit = Number(clean[0]);
-      const correiosBase = [34, 28, 32, 36, 29, 24, 30, 22, 26, 35][regionDigit] || 29;
-      const transpBase = Math.max(19, correiosBase - 5);
-      const isTransp = mode === "transportadora";
-
-      return {
-        cep: clean.replace(/(\d{5})(\d{3})/, "$1-$2"),
-        modeLabel: isTransp ? "Transportadora" : "Correios",
-        valor: isTransp ? transpBase : correiosBase,
-        prazo: isTransp ? "3 a 7 dias úteis" : "4 a 9 dias úteis"
-      };
-    }
-
-    function runFreight(id, price) {
-      const cepEl = document.getElementById("cep-" + id);
-      const modeEl = document.getElementById("mode-" + id);
-      const outEl = document.getElementById("freight-out-" + id);
-
-      const res = calcFreight(cepEl.value, modeEl.value);
-      if (res.error) {
-        outEl.innerHTML = `<span style="color:#b91c1c;">${res.error}</span>`;
-        return;
-      }
-
-      const total = Number(price) + res.valor;
-      outEl.innerHTML = `${res.modeLabel} (${res.cep}): <strong>${money(res.valor)}</strong> • ${res.prazo} • Total: <strong>${money(total)}</strong>`;
-    }
-
-    function setPayTab(method) {
-      activePayMethod = method;
-      ["pix", "credito", "debito"].forEach((m) => {
-        document.getElementById("tab-" + m).classList.toggle("active", m === method);
-      });
-
-      const pixPanel = document.getElementById("panel-pix");
-      const cardPanel = document.getElementById("panel-card");
-      const cardTitle = document.getElementById("cardMethodTitle");
-
-      if (method === "pix") {
-        pixPanel.style.display = "flex";
-        cardPanel.style.display = "none";
-      } else {
-        pixPanel.style.display = "none";
-        cardPanel.style.display = "flex";
-        cardTitle.textContent = method === "credito"
-          ? "DADOS DO CARTÃO DE CRÉDITO"
-          : "DADOS DO CARTÃO DE DÉBITO";
-      }
-    }
-
-    function openCheckout(id) {
-      const prod = loadProducts().find((p) => p.id === id);
-      if (!prod) return;
-
-      const selectedSize = document.getElementById("size-" + id)?.value || (prod.sizes?.[0] || "Único");
-      const selectedColor = document.getElementById("color-" + id)?.value || (prod.colors?.[0] || "Padrão");
-      const cepInputVal = document.getElementById("cep-" + id)?.value || "";
-      const modeVal = document.getElementById("mode-" + id)?.value || "correios";
-      const res = calcFreight(cepInputVal, modeVal);
-
-      const freightValor = !res.error ? res.valor : 0;
-      const total = Number(prod.price) + freightValor;
-
-      currentOrderBase = {
-        prodName: prod.name,
-        price: Number(prod.price),
-        size: selectedSize,
-        color: selectedColor,
-        freightValor,
-        freightLabel: !res.error ? `${res.modeLabel} (${money(res.valor)})` : "A calcular no CEP",
-        total
-      };
-
-      document.getElementById("checkoutSummary").innerHTML = `
-        <div><strong>Produto:</strong> ${prod.name}</div>
-        <div><strong>Cor:</strong> ${selectedColor} • <strong>Numeração:</strong> ${selectedSize}</div>
-        <div><strong>Produto:</strong> ${money(prod.price)} • <strong>Frete:</strong> ${currentOrderBase.freightLabel}</div>
-        <div style="font-size:1.08rem; color:var(--gold-bright); margin-top:4px;"><strong>Total: ${money(total)}</strong></div>
-      `;
-
-      if (!res.error) {
-        document.getElementById("cCep").value = res.cep;
-      } else {
-        document.getElementById("cCep").value = "";
-      }
-
-      document.getElementById("pixReceiverLabel").textContent = CONFIG.pixReceiver;
-      document.getElementById("pixBankLabel").textContent = CONFIG.pixBank;
-      document.getElementById("pixCopiaEColaBox").textContent = CONFIG.pixCopiaECola;
-      document.getElementById("orderDoneBox").classList.remove("show");
-      document.getElementById("orderDoneBox").innerHTML = "";
-      document.getElementById("checkoutForm").style.display = "flex";
-
-      setPayTab("pix");
-      document.getElementById("checkoutModal").classList.add("open");
-    }
-
-    function closeCheckout() {
-      document.getElementById("checkoutModal").classList.remove("open");
-    }
-
-    function copyPixCode() {
-      navigator.clipboard?.writeText(CONFIG.pixCopiaECola);
-      alert("Código Pix copiado!");
-    }
-
-    document.getElementById("checkoutForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      if (!currentOrderBase) return;
-
-      const cName = document.getElementById("cName").value.trim();
-      const cCpf = document.getElementById("cCpf").value.trim();
-      const cCep = document.getElementById("cCep").value.trim();
-      const cStreet = document.getElementById("cStreet").value.trim();
-      const cDistrict = document.getElementById("cDistrict").value.trim();
-      const cCity = document.getElementById("cCity").value.trim();
-
-      let methodText = "Pix (Código Copia e Cola)";
-      if (activePayMethod === "credito") {
-        const holder = document.getElementById("cardHolder").value.trim();
-        const num = document.getElementById("cardNumber").value.replace(/\s+/g, "");
-        if (!holder || num.length < 12) {
-          alert("Preencha os dados do cartão de crédito para finalizar.");
-          return;
-        }
-        methodText = `Cartão de Crédito (final ${num.slice(-4)})`;
-      } else if (activePayMethod === "debito") {
-        const holder = document.getElementById("cardHolder").value.trim();
-        const num = document.getElementById("cardNumber").value.replace(/\s+/g, "");
-        if (!holder || num.length < 12) {
-          alert("Preencha os dados do cartão de débito para finalizar.");
-          return;
-        }
-        methodText = `Cartão de Débito (final ${num.slice(-4)})`;
-      }
-
-      const orderCode = "MB-" + String(Date.now()).slice(-6);
-
-      // Limpa campos sensíveis do cartão da memória da página após submeter
-      document.getElementById("cardNumber").value = "";
-      document.getElementById("cardCvv").value = "";
-
-      document.getElementById("checkoutForm").style.display = "none";
-      const doneBox = document.getElementById("orderDoneBox");
-      doneBox.innerHTML = `
-        <div style="font-weight:800; color:#86efac; font-size:1rem; margin-bottom:6px;">Compra registrada — Pedido ${orderCode}</div>
-        <div><strong>Cliente:</strong> ${cName} (${cCpf})</div>
-        <div><strong>Item:</strong> ${currentOrderBase.prodName} • Cor <strong>${currentOrderBase.color}</strong> • Nº <strong>${currentOrderBase.size}</strong></div>
-        <div><strong>Endereço:</strong> ${cStreet}, ${cDistrict} — ${cCity} (CEP ${cCep})</div>
-        <div><strong>Pagamento escolhido:</strong> ${methodText}</div>
-        <div><strong>Total:</strong> <strong>${money(currentOrderBase.total)}</strong></div>
-        ${activePayMethod === "pix" ? `<div style="margin-top:8px; color:var(--gold-bright);">Use o código Pix copia e cola acima para concluir o pagamento.</div>` : ""}
-      `;
-      doneBox.classList.add("show");
-    });
-
-    function exportCatalogCode() {
-      const code = "const INITIAL_PRODUCTS = " + JSON.stringify(loadProducts(), null, 2) + ";";
-      navigator.clipboard?.writeText(code);
-      alert("Código do catálogo copiado! Cole no lugar de INITIAL_PRODUCTS no GitHub para publicar para todos os clientes.");
-    }
-
-    function renderProducts() {
-      const term = (document.getElementById("searchInput")?.value || "").toLowerCase().trim();
-      const all = loadProducts();
-      const filtered = term
-        ? all.filter((item) =>
-            item.name.toLowerCase().includes(term) ||
-            (item.description || "").toLowerCase().includes(term) ||
-            (item.colors || []).join(",").toLowerCase().includes(term) ||
-            (item.sizes || []).join(",").toLowerCase().includes(term)
-          )
-        : all;
-
-      const grid = document.getElementById("productsGrid");
-      if (!filtered.length) {
-        grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#555;">Nenhum produto encontrado para "${term}".</p>`;
-        return;
-      }
-
-      grid.innerHTML = filtered.map((p) => {
-        const photos = (p.photos && p.photos.length) ? p.photos : INITIAL_PRODUCTS[0].photos;
-        const sizes = (p.sizes && p.sizes.length) ? p.sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"];
-        const colors = (p.colors && p.colors.length) ? p.colors : ["Preto", "Off", "Vermelho"];
-
-        const thumbs = photos.map((u, idx) => `
-          <button
-            type="button"
-            class="thumb ${idx === 0 ? "active" : ""}"
-            onclick="setPhoto('${p.id}', ${idx}, '${u.replace(/'/g, "\\'")}')"
-            aria-label="Foto ${idx + 1} de ${p.name}"
-          >
-            <img src="${u}" alt="${p.name} ângulo ${idx + 1}">
-          </button>
-        `).join("");
-
-        const sizeOptions = sizes.map((s) => `<option value="${s}">${s}</option>`).join("");
-        const colorOptions = colors.map((c) => `<option value="${c}">${c}</option>`).join("");
-
-        const videoBlock = p.videoUrl
-          ? `<div class="video-row">▶ <a href="${p.videoUrl}" target="_blank" rel="noopener">Ver vídeo do produto</a></div>`
-          : "";
-
-        return `
-          <article class="card">
-            <div class="gallery">
-              <button type="button" class="delete-prod-btn" onclick="deleteProduct('${p.id}')">Remover</button>
-              <img id="img-${p.id}" class="main-img" src="${photos[0]}" alt="${p.name}">
-              <div id="thumbs-${p.id}" class="thumbs">${thumbs}</div>
-              ${videoBlock}
-            </div>
-            <div class="card-body">
-              <h3 class="prod-name">${p.name}</h3>
-              <p class="prod-desc">${p.description || ""}</p>
-              <div class="prod-price"><span>${money(p.price)}</span></div>
-
-              <div class="variants-row">
-                <div>
-                  <label for="color-${p.id}">Cor</label>
-                  <select id="color-${p.id}">${colorOptions}</select>
-                </div>
-                <div>
-                  <label for="size-${p.id}">Numeração</label>
-                  <select id="size-${p.id}">${sizeOptions}</select>
-                </div>
-              </div>
-
-              <div class="freight-box">
-                <label for="cep-${p.id}" style="color:#141418; margin:0;">Calcular frete pelo CEP</label>
-                <div class="freight-controls">
-                  <input id="cep-${p.id}" type="text" maxlength="9" placeholder="00000-000">
-                  <select id="mode-${p.id}" aria-label="Escolha Correios ou Transportadora">
-                    <option value="correios">Correios</option>
-                    <option value="transportadora">Transportadora</option>
-                  </select>
-                  <button
-                    type="button"
-                    class="btn-dark"
-                    style="padding:8px 10px;"
-                    onclick="runFreight('${p.id}', ${Number(p.price)})"
-                  >
-                    Calcular
-                  </button>
-                </div>
-                <div id="freight-out-${p.id}" class="freight-result"></div>
-              </div>
-
-              <div class="card-actions">
-                <button type="button" class="btn-gold" onclick="openCheckout('${p.id}')">Comprar agora</button>
-              </div>
-            </div>
-          </article>
-        `;
-      }).join("");
-    }
-
-    document.getElementById("productForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const name = document.getElementById("pName").value.trim();
-      const price = parseFloat(document.getElementById("pPrice").value);
-      const sizes = document.getElementById("pSizes").value
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
-      const colors = document.getElementById("pColors").value
-        .split(",")
-        .map((c) => c.trim())
-        .filter(Boolean);
-      const videoUrl = document.getElementById("pVideo").value.trim();
-      const description = document.getElementById("pDesc").value.trim();
-
-      if (!name || isNaN(price) || !selectedGalleryImages.length) {
-        alert("Selecione pelo menos 1 foto da galeria.");
-        return;
-      }
-
-      const current = loadProducts().filter((item) => item.id !== "mb-1");
-      const updated = [
-        {
-          id: "mb-" + Date.now(),
-          name,
-          price,
-          sizes: sizes.length ? sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"],
-          colors: colors.length ? colors : ["Preto", "Off", "Vermelho"],
-          videoUrl,
-          photos: selectedGalleryImages,
-          description
-        },
-        ...current
-      ];
-
-      saveProducts(updated);
-      renderProducts();
-      selectedGalleryImages = [];
-      document.getElementById("galleryPreview").innerHTML = "";
-      this.reset();
-      document.getElementById("pSizes").value = "34, 35, 36, 37, 38, 39, 40, 41, 42, 43";
-      document.getElementById("pColors").value = "Preto, Off, Vermelho";
-      toggleAdmin();
-    });
-
-    const waBase = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent("Olá! Vim pela loja Mosaico Bliar.")}`;
-    document.getElementById("headerWhatsapp").href = waBase;
-    document.getElementById("bottomWhatsapp").href = waBase;
-
-    renderProducts();
-  </script>
-</body>
-</html>
-function abrirPainelAdmin() {
-  const senha = prompt("Digite a senha de administrador:");
-  // Troque "mosaico2026" pela sua senha desejada
-  if (senha === "mosaico2026") {
-    document.getElementById("modal-cadastro").style.display = "block";
-  } else if (senha !== null) {
-    alert("Senha incorreta!");
-  }
-}
+  <!-- Modal Cadastro de Produto (Admin) -->
+  <div class="modal" id="modal-cadastro">
+    <div class="modal-content">
