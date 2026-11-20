@@ -175,3 +175,82 @@ if (file) { const r = new FileReader(); r.onload = e => finalizar(e.target.resul
 else finalizar("unsplash.com");
 }
 render();
+  <script>
+    const SENHA_ADMIN = "mosaico2026";
+    let frete = 0, cart = [];
+    let produtos = JSON.parse(localStorage.getItem("mb_prods")) || [
+      { id: 1, nome: "Tênis Casual Conforto", preco: 189.90, nums: "35, 36, 37, 38, 39", cores: "Roxo Ameixa, Preto", img: "https://unsplash.com", link: "" },
+      { id: 2, nome: "Sandália Salto Bloco", preco: 149.90, nums: "34, 35, 36, 37, 38", cores: "Ameixa, Nude, Preto", img: "https://unsplash.com", link: "" }
+    ];
+
+    function render() {
+      document.getElementById("vitrine").innerHTML = produtos.map((p, i) => `
+        <div class="card">
+          <img src="${p.img}" alt="${p.nome}">
+          <div class="c-body">
+            <div class="c-title">${p.nome}</div>
+            <div class="c-price">R$ ${Number(p.preco).toFixed(2).replace('.', ',')}</div>
+            <select id="num-${i}">${p.nums.split(',').map(n => `<option>Tam: ${n.trim()}</option>`).join('')}</select>
+            <select id="cor-${i}">${p.cores.split(',').map(c => `<option>Cor: ${c.trim()}</option>`).join('')}</select>
+            <button class="btn btn-p" style="width:100%; justify-content:center;" onclick="addCart(${i})">Adicionar ao Carrinho</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addCart(i) {
+      const p = produtos[i];
+      cart.push({ nome: p.nome, preco: Number(p.preco), num: document.getElementById(`num-${i}`).value, cor: document.getElementById(`cor-${i}`).value, link: p.link });
+      atualizarCart();
+      abrir('m-cart');
+    }
+
+    function atualizarCart() {
+      document.getElementById("qtd").innerText = cart.length;
+      let sub = 0;
+      document.getElementById("lista-cart").innerHTML = cart.map((item, idx) => {
+        sub += item.preco;
+        return `<div class="item-row"><span>${item.nome} (${item.num} | ${item.cor})</span><strong>R$ ${item.preco.toFixed(2).replace('.', ',')} <button onclick="remCart(${idx})" style="color:red;border:none;background:none;cursor:pointer;">✕</button></strong></div>`;
+      }).join('') || "<p>Carrinho vazio.</p>";
+      document.getElementById("total").innerText = (sub + frete).toFixed(2).replace('.', ',');
+    }
+
+    function remCart(idx) { cart.splice(idx, 1); atualizarCart(); }
+    function calcFrete() {
+      if (document.getElementById("cep").value.replace(/\D/g,'').length < 8) return alert("Digite um CEP válido.");
+      frete = 19.90;
+      document.getElementById("msg-frete").innerText = "Frete fixo promocional: R$ 19,90";
+      atualizarCart();
+    }
+
+    function pagar() {
+      if (!cart.length) return alert("Adicione um produto primeiro!");
+      const nome = document.getElementById("cli-nome").value.trim();
+      const end = document.getElementById("cli-end").value.trim();
+      if (!nome || !end) return alert("Preencha seu nome e endereço completo para entrega.");
+      const linkDireto = cart.find(c => c.link)?.link;
+      if (linkDireto) { window.open(linkDireto, "_blank"); return; }
+      const resumo = cart.map(c => `- ${c.nome} (${c.num}, ${c.cor})`).join('%0A');
+      window.open(`https://wa.me! Pedido Mosaico Bliar:%0A${resumo}%0ATotal: R$ ${document.getElementById("total").innerText}%0ACliente: ${nome}%0AEndereço: ${end}`, "_blank");
+    }
+
+    function abrir(id) { document.getElementById(id).style.display = "block"; }
+    function fechar(id) { document.getElementById(id).style.display = "none"; }
+    function abrirAdmin() { if (prompt("Digite a senha da loja:") === SENHA_ADMIN) abrir('m-admin'); else alert("Senha incorreta!"); }
+
+    function salvarProd() {
+      const nome = document.getElementById("p-nome").value, preco = document.getElementById("p-preco").value;
+      const file = document.getElementById("p-foto").files;
+      if (!nome || !preco) return alert("Preencha nome e preço!");
+      const finalizar = (imgUrl) => {
+        produtos.unshift({ id: Date.now(), nome, preco, nums: document.getElementById("p-nums").value, cores: document.getElementById("p-cores").value, img: imgUrl, link: document.getElementById("p-link").value.trim() });
+        localStorage.setItem("mb_prods", JSON.stringify(produtos));
+        render(); fechar('m-admin'); alert("Produto cadastrado na vitrine!");
+      };
+      if (file) { const r = new FileReader(); r.onload = e => finalizar(e.target.result); r.readAsDataURL(file); }
+      else finalizar("https://unsplash.com");
+    }
+    render();
+  </script>
+</body>
+</html>
