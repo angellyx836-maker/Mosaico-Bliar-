@@ -154,4 +154,24 @@
       if (!cart.length) return alert("Adicione um produto primeiro!");
       const nome = document.getElementById("cli-nome").value.trim();
       const end = document.getElementById("cli-end").value.trim();
-      if (!nome || !end) return alert("Preencha seu nome e endereço completo para entrega.");
+      if (!nome || !end) return alert("Preencha seu nome e endereço completo para entrega.");const linkDireto = cart.find(c => c.link)?.link;
+if (linkDireto) { window.open(linkDireto, "_blank"); return; }
+const resumo = cart.map(c => - ${c.nome} (${c.num}, ${c.cor})).join('%0A');
+window.open(https://wa.me! Pedido Mosaico Bliar:%0A${resumo}%0ATotal: R$ ${document.getElementById("total").innerText}%0ACliente: ${nome}%0AEndereço: ${end}, "_blank");
+}
+function abrir(id) { document.getElementById(id).style.display = "block"; }
+function fechar(id) { document.getElementById(id).style.display = "none"; }
+function abrirAdmin() { if (prompt("Digite a senha da loja:") === SENHA_ADMIN) abrir('m-admin'); else alert("Senha incorreta!"); }
+function salvarProd() {
+const nome = document.getElementById("p-nome").value, preco = document.getElementById("p-preco").value;
+const file = document.getElementById("p-foto").files[0];
+if (!nome || !preco) return alert("Preencha nome e preço!");
+const finalizar = (imgUrl) => {
+produtos.unshift({ id: Date.now(), nome, preco, nums: document.getElementById("p-nums").value, cores: document.getElementById("p-cores").value, img: imgUrl, link: document.getElementById("p-link").value.trim() });
+localStorage.setItem("mb_prods", JSON.stringify(produtos));
+render(); fechar('m-admin'); alert("Produto cadastrado na vitrine!");
+};
+if (file) { const r = new FileReader(); r.onload = e => finalizar(e.target.result); r.readAsDataURL(file); }
+else finalizar("unsplash.com");
+}
+render();
