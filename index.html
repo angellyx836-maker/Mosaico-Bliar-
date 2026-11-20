@@ -1139,3 +1139,12 @@
   </script>
 </body>
 </html>
+function abrirPainelAdmin() {
+  const senha = prompt("Digite a senha de administrador:");
+  // Troque "mosaico2026" pela sua senha desejada
+  if (senha === "mosaico2026") {
+    document.getElementById("modal-cadastro").style.display = "block";
+  } else if (senha !== null) {
+    alert("Senha incorreta!");
+  }
+}
