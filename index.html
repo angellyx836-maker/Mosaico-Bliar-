@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mosaico Bliar — Loja Oficial</title>
-  <meta name="description" content="Mosaico Bliar. Veja vários ângulos e vídeo dos produtos, calcule o frete por CEP nos Correios ou Transportadora e pague via Pix ou Link.">
+  <meta name="description" content="Mosaico Bliar. Veja vários ângulos e vídeo dos produtos, calcule o frete por CEP nos Correios ou Transportadora e pague via Pix, Crédito ou Débito.">
   <link rel="canonical" href="https://appbliar.com.br/">
   <style>
     :root {
@@ -348,7 +348,7 @@
       text-align: center;
     }
 
-    /* Janela de Checkout / Pix (Nubank ou qualquer banco) */
+    /* Janela de Checkout com escolha de Pix, Crédito ou Débito */
     .modal-backdrop {
       display: none;
       position: fixed;
@@ -367,21 +367,50 @@
       color: var(--white);
       border: 1.5px solid var(--gold);
       border-radius: 18px;
-      max-width: 440px;
+      max-width: 450px;
       width: 100%;
       padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 12px;
+      max-height: 92vh;
+      overflow-y: auto;
     }
 
-    .pix-box {
+    .method-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .method-btn {
+      background: var(--black-3);
+      color: var(--white);
+      border: 1px solid var(--border-dark);
+      border-radius: 8px;
+      padding: 9px 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .method-btn.active {
+      background: var(--gold-bright);
+      color: var(--black);
+      border-color: var(--gold-bright);
+    }
+
+    .method-panel {
       background: var(--black-3);
       border: 1px solid var(--border-dark);
       border-radius: 10px;
       padding: 12px;
       word-break: break-all;
       font-size: 0.88rem;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     footer {
@@ -426,7 +455,7 @@
 <body id="topo">
   <div class="top-promo">
     <span><strong>MOSAICO BLIAR:</strong> NOVIDADES E OFERTAS ESPECIAIS</span>
-    <span><strong>ENTREGA RÁPIDA</strong> • CORREIOS &amp; TRANSPORTADORA</span>
+    <span><strong>PIX, CRÉDITO OU DÉBITO</strong> • CORREIOS &amp; TRANSPORTADORA</span>
   </div>
 
   <div class="shipping-strip">
@@ -458,14 +487,14 @@
     <div class="hero-content">
       <div class="hero-kicker">Coleção Exclusiva</div>
       <h1>Mosaico Bliar</h1>
-      <div class="hero-pill">Fotos reais, vídeo, frete por CEP e pagamento rápido</div>
+      <div class="hero-pill">Fotos reais, vídeo, frete por CEP • Pix, Crédito ou Débito</div>
     </div>
   </section>
 
   <main class="container">
     <section id="adminPanel" class="admin-panel">
       <h2 style="margin:0 0 4px; color:var(--gold-bright); font-size:1.15rem;">Cadastrar produto com fotos da galeria</h2>
-      <p style="margin:0; font-size:0.84rem; color:#c8c8d2;">Selecione até 5 fotos direto da galeria do celular (frente, lateral, interior, solado). O pagamento pode ser via Pix do seu banco (Nubank ou outro) ou link de cobrança.</p>
+      <p style="margin:0; font-size:0.84rem; color:#c8c8d2;">Selecione até 5 fotos direto da galeria do celular (frente, lateral, interior, solado). O cliente poderá escolher pagar no Pix, Cartão de Crédito ou Cartão de Débito.</p>
 
       <form id="productForm" class="form-grid">
         <div style="grid-column: 1 / -1;" class="gallery-picker-box">
@@ -487,8 +516,8 @@
           <input id="pVideo" type="url" placeholder="https://youtube.com/shorts/...">
         </div>
         <div>
-          <label for="pCheckout">Link de cobrança do banco (opcional)</label>
-          <input id="pCheckout" type="url" placeholder="Deixe vazio para usar o Pix do seu banco">
+          <label for="pCheckout">Link de cartão/checkout (opcional)</label>
+          <input id="pCheckout" type="url" placeholder="Ex.: link de pagamento que aceita cartão">
         </div>
         <div style="grid-column: 1 / -1;">
           <label for="pDesc">Descrição e detalhes</label>
@@ -515,28 +544,35 @@
     <section id="productsGrid" class="products-grid"></section>
   </main>
 
-  <!-- Modal de Checkout / Pagamento Pix (Nubank ou qualquer banco) -->
+  <!-- Modal de Checkout com escolha de Pix, Crédito ou Débito -->
   <div id="checkoutModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h3 style="margin:0; color:var(--gold-bright);">Finalizar Compra</h3>
+        <h3 style="margin:0; color:var(--gold-bright);">Escolha como pagar</h3>
         <button type="button" class="btn-outline-gold" style="padding:4px 10px;" onclick="closeCheckout()">X</button>
       </div>
+
       <div id="checkoutSummary" style="font-size:0.92rem; line-height:1.5;"></div>
-      <div class="pix-box">
-        <div style="font-size:0.78rem; color:var(--gold-bright); font-weight:700; margin-bottom:4px;">PAGAMENTO VIA PIX (NUBANK / SEU BANCO)</div>
-        <div><strong>Recebedor:</strong> <span id="pixOwnerText"></span></div>
-        <div><strong>Banco:</strong> <span id="pixBankText"></span></div>
-        <div style="margin-top:6px;"><strong>Chave Pix:</strong> <span id="pixKeyText"></span></div>
+
+      <div>
+        <label style="margin-bottom:6px;">Forma de pagamento escolhida pelo cliente:</label>
+        <div class="method-tabs">
+          <button type="button" id="tab-pix" class="method-btn active" onclick="selectPaymentMethod('pix')">Pix</button>
+          <button type="button" id="tab-credito" class="method-btn" onclick="selectPaymentMethod('credito')">Cartão Crédito</button>
+          <button type="button" id="tab-debito" class="method-btn" onclick="selectPaymentMethod('debito')">Cartão Débito</button>
+        </div>
       </div>
-      <button type="button" class="btn-gold" onclick="copyPixKey()">Copiar Chave Pix</button>
-      <a id="checkoutWhatsappBtn" class="btn-outline-gold" href="#" target="_blank" rel="noopener">Enviar pedido e comprovante no WhatsApp</a>
-      <a id="checkoutExternalLink" class="btn-outline-gold" href="#" target="_blank" rel="noopener" style="display:none;">Abrir link de pagamento externo</a>
+
+      <div id="methodPanel" class="method-panel"></div>
+
+      <button type="button" id="copyPixBtn" class="btn-gold" onclick="copyPixKey()">Copiar Chave Pix</button>
+      <a id="checkoutCardLinkBtn" class="btn-gold" href="#" target="_blank" rel="noopener" style="display:none;">Ir para pagamento com cartão</a>
+      <a id="checkoutWhatsappBtn" class="btn-outline-gold" href="#" target="_blank" rel="noopener">Confirmar pedido no WhatsApp</a>
     </div>
   </div>
 
   <footer>
-    <strong>Mosaico Bliar</strong> • appbliar.com.br • Envio via Correios ou Transportadora
+    <strong>Mosaico Bliar</strong> • appbliar.com.br • Pix, Crédito ou Débito • Correios ou Transportadora
   </footer>
 
   <nav class="bottom-nav" aria-label="Navegação inferior">
@@ -547,12 +583,13 @@
   </nav>
 
   <script>
-    // CONFIGURAÇÃO DA SUA LOJA E RECEBIMENTO (altere com seus dados reais)
+    // CONFIGURAÇÃO DA SUA LOJA (altere com seus dados reais)
     const CONFIG = {
       whatsapp: "5511999999999",
       pixChave: "SUA-CHAVE-PIX-AQUI",
       pixRecebedor: "Mosaico Bliar",
-      pixBanco: "Nubank"
+      pixBanco: "Nubank",
+      cardCheckoutPadrao: "" // Opcional: coloque aqui um link padrão que aceite cartão (crédito/débito) se quiser
     };
 
     const INITIAL_PRODUCTS = [
@@ -571,8 +608,19 @@
       }
     ];
 
-    const STORAGE_KEY = "mosaico_bliar_vitrine_v3";
+    const STORAGE_KEY = "mosaico_bliar_vitrine_v4";
     let selectedGalleryImages = [];
+    let currentCheckoutData = {
+      id: "",
+      name: "",
+      price: 0,
+      total: 0,
+      cepLabel: "",
+      modeLabel: "",
+      freightValor: 0,
+      cardUrl: "",
+      method: "pix"
+    };
 
     function loadProducts() {
       try {
@@ -605,7 +653,6 @@
       }
     }
 
-    // Comprime fotos da galeria para carregar rápido e caber no navegador
     function compressImageFile(file, maxSize = 800, quality = 0.76) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -702,17 +749,58 @@
       outEl.innerHTML = `${res.modeLabel} (${res.cep}): <strong>${money(res.valor)}</strong> • ${res.prazo} • Total: <strong>${money(total)}</strong>`;
     }
 
-    function buildOrderWhatsapp(id, name, price) {
-      const cepVal = document.getElementById("cep-" + id)?.value || "";
-      const modeVal = document.getElementById("mode-" + id)?.value || "correios";
-      const res = calcFreight(cepVal, modeVal);
+    function buildWhatsappWithMethod(data) {
+      const methodLabel =
+        data.method === "credito" ? "Cartão de Crédito" :
+        data.method === "debito" ? "Cartão de Débito" : "Pix";
 
-      let msg = `Olá! Quero comprar *${name}* (${money(price)}) na *Mosaico Bliar*.`;
-      if (!res.error) {
-        const total = Number(price) + res.valor;
-        msg += `\nCEP: *${res.cep}*\nEnvio: *${res.modeLabel}* (${money(res.valor)})\nTotal: *${money(total)}*`;
+      let msg = `Olá! Quero comprar *${data.name}* (${money(data.price)}) na *Mosaico Bliar*.\nForma de pagamento escolhida: *${methodLabel}*.`;
+      if (data.cepLabel) {
+        msg += `\nCEP: *${data.cepLabel}*\nEnvio: *${data.modeLabel}* (${money(data.freightValor)})\nTotal: *${money(data.total)}*`;
       }
       return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+    }
+
+    function selectPaymentMethod(method) {
+      currentCheckoutData.method = method;
+
+      ["pix", "credito", "debito"].forEach((m) => {
+        document.getElementById("tab-" + m).classList.toggle("active", m === method);
+      });
+
+      const panel = document.getElementById("methodPanel");
+      const copyBtn = document.getElementById("copyPixBtn");
+      const cardBtn = document.getElementById("checkoutCardLinkBtn");
+      const waBtn = document.getElementById("checkoutWhatsappBtn");
+
+      if (method === "pix") {
+        panel.innerHTML = `
+          <div style="font-size:0.78rem; color:var(--gold-bright); font-weight:700;">PAGAMENTO VIA PIX</div>
+          <div><strong>Recebedor:</strong> ${CONFIG.pixRecebedor}</div>
+          <div><strong>Banco:</strong> ${CONFIG.pixBanco}</div>
+          <div><strong>Chave Pix:</strong> ${CONFIG.pixChave}</div>
+        `;
+        copyBtn.style.display = "inline-flex";
+        cardBtn.style.display = "none";
+        waBtn.textContent = "Enviar comprovante Pix no WhatsApp";
+      } else {
+        const labelCard = method === "credito" ? "CARTÃO DE CRÉDITO" : "CARTÃO DE DÉBITO";
+        panel.innerHTML = `
+          <div style="font-size:0.78rem; color:var(--gold-bright); font-weight:700;">PAGAMENTO VIA ${labelCard}</div>
+          <div>Você escolheu pagar no <strong>${method === "credito" ? "Cartão de Crédito" : "Cartão de Débito"}</strong>.</div>
+          <div style="color:#d4d4dc; font-size:0.82rem;">Se houver link de pagamento configurado para o produto, você pode abrir abaixo; caso contrário, envie o pedido no WhatsApp para finalizar na modalidade escolhida.</div>
+        `;
+        copyBtn.style.display = "none";
+        if (currentCheckoutData.cardUrl) {
+          cardBtn.href = currentCheckoutData.cardUrl;
+          cardBtn.style.display = "inline-flex";
+        } else {
+          cardBtn.style.display = "none";
+        }
+        waBtn.textContent = `Finalizar no ${method === "credito" ? "Crédito" : "Débito"} via WhatsApp`;
+      }
+
+      waBtn.href = buildWhatsappWithMethod(currentCheckoutData);
     }
 
     function openCheckout(id) {
@@ -723,7 +811,21 @@
       const modeVal = document.getElementById("mode-" + id)?.value || "correios";
       const res = calcFreight(cepVal, modeVal);
 
-      const total = !res.error ? Number(prod.price) + res.valor : Number(prod.price);
+      const freightValor = !res.error ? res.valor : 0;
+      const total = Number(prod.price) + freightValor;
+
+      currentCheckoutData = {
+        id: prod.id,
+        name: prod.name,
+        price: Number(prod.price),
+        total,
+        cepLabel: !res.error ? res.cep : "",
+        modeLabel: !res.error ? res.modeLabel : "",
+        freightValor,
+        cardUrl: prod.checkoutUrl || CONFIG.cardCheckoutPadrao || "",
+        method: "pix"
+      };
+
       const freightLine = !res.error
         ? `<div><strong>Frete (${res.modeLabel} - CEP ${res.cep}):</strong> ${money(res.valor)}</div>`
         : `<div style="color:#fcd34d;">Calcule o CEP no card se quiser somar o frete agora.</div>`;
@@ -732,22 +834,10 @@
         <div><strong>Produto:</strong> ${prod.name}</div>
         <div><strong>Valor do produto:</strong> ${money(prod.price)}</div>
         ${freightLine}
-        <div style="font-size:1.1rem; color:var(--gold-bright); margin-top:4px;"><strong>Total a pagar: ${money(total)}</strong></div>
+        <div style="font-size:1.1rem; color:var(--gold-bright); margin-top:4px;"><strong>Total: ${money(total)}</strong></div>
       `;
 
-      document.getElementById("pixOwnerText").textContent = CONFIG.pixRecebedor;
-      document.getElementById("pixBankText").textContent = CONFIG.pixBanco;
-      document.getElementById("pixKeyText").textContent = CONFIG.pixChave;
-      document.getElementById("checkoutWhatsappBtn").href = buildOrderWhatsapp(id, prod.name, prod.price);
-
-      const extLink = document.getElementById("checkoutExternalLink");
-      if (prod.checkoutUrl) {
-        extLink.href = prod.checkoutUrl;
-        extLink.style.display = "inline-flex";
-      } else {
-        extLink.style.display = "none";
-      }
-
+      selectPaymentMethod("pix");
       document.getElementById("checkoutModal").classList.add("open");
     }
 
@@ -833,11 +923,20 @@
               </div>
 
               <div class="card-actions">
-                <button type="button" class="btn-gold" onclick="openCheckout('${p.id}')">Comprar agora (Pix / Banco)</button>
+                <button type="button" class="btn-gold" onclick="openCheckout('${p.id}')">Comprar (Pix, Crédito ou Débito)</button>
                 <a
                   class="btn-dark"
                   href="#"
-                  onclick="this.href = buildOrderWhatsapp('${p.id}', '${p.name.replace(/'/g, "\\'")}', ${Number(p.price)});"
+                  onclick="this.href = buildWhatsappWithMethod({
+                    id: '${p.id}',
+                    name: '${p.name.replace(/'/g, "\\'")}',
+                    price: ${Number(p.price)},
+                    total: ${Number(p.price)},
+                    cepLabel: (document.getElementById('cep-${p.id}')?.value || '').replace(/\\D/g, '').length === 8 ? document.getElementById('cep-${p.id}').value : '',
+                    modeLabel: (document.getElementById('mode-${p.id}')?.value || 'correios') === 'transportadora' ? 'Transportadora' : 'Correios',
+                    freightValor: 0,
+                    method: 'pix'
+                  });"
                   target="_blank"
                   rel="noopener"
                 >
