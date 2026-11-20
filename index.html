@@ -1,176 +1,914 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mosaico Bliar — Loja Oficial</title>
+  <meta name="description" content="Mosaico Bliar. Escolha cor e numeração, calcule o frete por CEP e finalize sua compra com segurança pelo Mercado Pago.">
+  <link rel="canonical" href="https://appbliar.com.br/">
   <style>
-    :root { --ameixa: #3B1332; --ameixa2: #5C1F4E; --claro: #8A3676; --bg: #F9F2F7; --txt: #241822; --borda: #E6D5E2; }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
-    body { background: var(--bg); color: var(--txt); padding-bottom: 75px; }
-    .top { background: linear-gradient(90deg, var(--ameixa), var(--ameixa2)); color: #fff; text-align: center; padding: 8px; font-size: .82rem; }
-    .top strong { color: #F5D77F; }
-    header { background: #fff; border-bottom: 2px solid var(--borda); padding: 12px 16px; position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 1.3rem; font-weight: 800; color: var(--ameixa); text-transform: uppercase; }
-    .logo span { color: var(--claro); }
-    .btn { border: none; border-radius: 8px; padding: 9px 14px; font-weight: 600; cursor: pointer; font-size: .88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
-    .btn-p { background: var(--ameixa); color: #fff; }
-    .btn-o { background: transparent; border: 1.5px solid var(--ameixa); color: var(--ameixa); }
-    .btn-w { background: #25D366; color: #fff; }
-    .hero { background: linear-gradient(135deg, var(--ameixa), var(--ameixa2)); color: #fff; padding: 26px 16px; text-align: center; }
-    .hero h1 { font-size: 1.55rem; margin-bottom: 6px; }
-    .hero p { color: #F0DCE9; font-size: .92rem; margin-bottom: 12px; }
-    .badge { display: inline-block; background: rgba(255,255,255,.15); padding: 5px 12px; border-radius: 20px; font-size: .78rem; margin: 3px; }
-    .wrap { max-width: 1100px; margin: 20px auto; padding: 0 14px; }
-    h2 { color: var(--ameixa); margin-bottom: 14px; border-left: 4px solid var(--claro); padding-left: 10px; font-size: 1.2rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(245px, 1fr)); gap: 16px; }
-    .card { background: #fff; border: 1px solid var(--borda); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
-    .card img { width: 100%; height: 210px; object-fit: cover; background: #EFE4EC; }
-    .c-body { padding: 14px; flex: 1; display: flex; flex-direction: column; }
-    .c-title { font-weight: 700; color: var(--ameixa); font-size: 1.05rem; margin-bottom: 4px; }
-    .c-price { font-size: 1.25rem; font-weight: 800; color: var(--ameixa2); margin: 4px 0 8px; }
-    select, input { width: 100%; padding: 8px; border: 1px solid var(--borda); border-radius: 6px; margin-bottom: 8px; font-size: .9rem; }
-    .modal { display: none; position: fixed; inset: 0; background: rgba(25,8,21,.75); z-index: 99; overflow-y: auto; padding: 16px; }
-    .m-box { background: #fff; max-width: 460px; margin: 20px auto; border-radius: 12px; padding: 20px; position: relative; border-top: 5px solid var(--ameixa); }
-    .close { position: absolute; top: 10px; right: 14px; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
-    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--borda); font-size: .88rem; }
-    .sec { background: #EEFAF1; border: 1px solid #B7E4C7; color: #1B4332; padding: 8px; border-radius: 8px; font-size: .78rem; margin: 8px 0; }
-    nav { position: fixed; bottom: 0; inset-inline: 0; background: var(--ameixa); display: flex; justify-content: space-around; padding: 10px 0; z-index: 50; }
-    nav button, nav a { background: none; border: none; color: #fff; font-size: .85rem; text-decoration: none; cursor: pointer; }
+    :root {
+      --black: #0a0a0c;
+      --black-2: #121216;
+      --black-3: #1b1b21;
+      --gold: #dfb63f;
+      --gold-bright: #f2cb4b;
+      --white: #ffffff;
+      --light-bg: #f5f5f7;
+      --text-dark: #141418;
+      --text-muted: #6b6b76;
+      --border-dark: #2a2a33;
+      --mp-blue: #009ee3;
+      --wa-green: #25d366;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--light-bg);
+      color: var(--text-dark);
+      padding-bottom: 84px;
+    }
+
+    .top-promo {
+      background: var(--black);
+      color: var(--white);
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .top-promo strong { color: var(--gold-bright); }
+
+    .shipping-strip {
+      background: var(--gold);
+      color: var(--black);
+      text-align: center;
+      padding: 7px 12px;
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    header {
+      background: var(--black);
+      color: var(--white);
+      border-bottom: 1px solid rgba(223, 182, 63, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--white);
+    }
+
+    .logo-text-group {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+    }
+
+    .logo-main {
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: var(--white);
+    }
+
+    .logo-sub {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--gold-bright);
+      text-transform: uppercase;
+    }
+
+    .btn-gold {
+      background: var(--gold-bright);
+      color: var(--black);
+      border: none;
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-outline-gold {
+      background: transparent;
+      color: var(--gold-bright);
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-weight: 700;
+      font-size: 0.84rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 230px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, rgba(10,10,12,0.28) 0%, rgba(10,10,12,0.42) 100%),
+                  url("https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1200&q=85") center/cover no-repeat;
+      filter: brightness(1.12) contrast(1.04);
+      color: var(--white);
+      padding: 48px 18px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.1rem, 6.5vw, 3.2rem);
+      font-weight: 900;
+      color: var(--gold-bright);
+      line-height: 1.08;
+      text-shadow: 0 3px 16px rgba(0, 0, 0, 0.78);
+    }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 24px 16px; }
+
+    .admin-panel {
+      display: none;
+      background: var(--black-2);
+      color: var(--white);
+      border: 1.5px solid var(--gold);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .admin-panel.open { display: block; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      margin-bottom: 4px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #d0d0d8;
+      padding: 9px 11px;
+      font-size: 0.9rem;
+      background: var(--white);
+      color: var(--text-dark);
+    }
+
+    .admin-panel input,
+    .admin-panel select,
+    .admin-panel textarea {
+      background: var(--black-3);
+      color: var(--white);
+      border-color: var(--border-dark);
+    }
+
+    .gallery-picker-box {
+      border: 1.5px dashed var(--gold);
+      border-radius: 12px;
+      padding: 14px;
+      background: rgba(242, 203, 75, 0.06);
+      text-align: center;
+    }
+
+    .preview-strip {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      justify-content: center;
+    }
+
+    .preview-strip img {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1.5px solid var(--gold);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .section-title { margin: 0; font-size: 1.35rem; font-weight: 800; color: var(--black); }
+    .search-box { max-width: 280px; width: 100%; }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(305px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #e4e4ea;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gallery { background: var(--black); padding: 10px; position: relative; }
+
+    .delete-prod-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(10,10,12,0.82);
+      color: #fca5a5;
+      border: 1px solid #ef4444;
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .main-img {
+      width: 100%;
+      height: 235px;
+      object-fit: cover;
+      border-radius: 10px;
+      display: block;
+      background: var(--black-2);
+    }
+
+    .thumbs { display: flex; gap: 8px; margin-top: 8px; overflow-x: auto; }
+
+    .thumb {
+      width: 56px;
+      height: 56px;
+      flex: 0 0 56px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      padding: 0;
+      background: var(--black-2);
+      cursor: pointer;
+    }
+
+    .thumb.active { border-color: var(--gold-bright); }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .video-row { margin-top: 8px; font-size: 0.84rem; }
+    .video-row a { color: var(--gold-bright); font-weight: 700; text-decoration: underline; }
+
+    .card-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .prod-name { margin: 0; font-size: 1.12rem; font-weight: 800; color: var(--black); }
+    .prod-desc { margin: 0; font-size: 0.88rem; color: var(--text-muted); }
+    .prod-price { font-size: 1.35rem; font-weight: 900; }
+    .prod-price span { background: var(--gold); color: var(--black); padding: 2px 8px; border-radius: 6px; }
+
+    .variants-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .variants-row label {
+      color: var(--text-dark);
+      font-size: 0.78rem;
+      margin-bottom: 3px;
+    }
+
+    .variants-row select { padding: 8px; font-size: 0.84rem; }
+
+    .freight-box {
+      background: #faf8f2;
+      border: 1px solid #eadc9f;
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .freight-controls { display: grid; grid-template-columns: 1fr auto auto; gap: 6px; }
+    .freight-controls input, .freight-controls select { padding: 8px; font-size: 0.84rem; }
+    .freight-result { font-size: 0.84rem; font-weight: 600; color: var(--black); min-height: 18px; }
+
+    .btn-dark {
+      background: var(--black);
+      color: var(--gold-bright);
+      border: 1px solid var(--black);
+      border-radius: 8px;
+      padding: 9px 11px;
+      font-weight: 700;
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+
+    .card-actions { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+
+    .mp-badge {
+      font-size: 0.75rem;
+      color: #0369a1;
+      font-weight: 700;
+      text-align: center;
+      background: #e0f2fe;
+      padding: 5px 8px;
+      border-radius: 6px;
+    }
+
+    .link-wa-subtle {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-decoration: underline;
+      padding-top: 2px;
+    }
+
+    /* Seção de atendimento WhatsApp lá embaixo */
+    .contact-banner {
+      margin-top: 32px;
+      background: var(--black-2);
+      color: var(--white);
+      border: 1px solid rgba(223, 182, 63, 0.35);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .contact-banner h3 {
+      margin: 0;
+      color: var(--gold-bright);
+      font-size: 1.15rem;
+    }
+
+    .contact-banner p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: #d4d4dc;
+      max-width: 480px;
+    }
+
+    .btn-wa {
+      background: var(--wa-green);
+      color: #052e16;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-weight: 800;
+      font-size: 0.88rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Botão flutuante discreto no canto inferior direito */
+    .wa-float {
+      position: fixed;
+      right: 16px;
+      bottom: 66px;
+      z-index: 45;
+      background: var(--wa-green);
+      color: #052e16;
+      border-radius: 999px;
+      padding: 10px 15px;
+      font-weight: 800;
+      font-size: 0.84rem;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    footer {
+      background: var(--black);
+      color: #c8c8d2;
+      text-align: center;
+      padding: 24px 16px;
+      font-size: 0.84rem;
+      margin-top: 24px;
+    }
+
+    footer strong { color: var(--gold-bright); }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--white);
+      border-top: 1px solid #dcdce4;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      z-index: 40;
+    }
+
+    .bottom-nav a, .bottom-nav button {
+      background: none;
+      border: none;
+      padding: 8px 4px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--black);
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      cursor: pointer;
+    }
   </style>
 </head>
-<body>
-  <div class="top"><strong>MOSAICO BLIAR:</strong> PIX, CRÉDITO OU DÉBITO VIA <strong>MERCADO PAGO</strong></div>
+<body id="topo">
+  <div class="top-promo">
+    <span><strong>MOSAICO BLIAR:</strong> NOVIDADES E OFERTAS ESPECIAIS</span>
+    <span><strong>PAGAMENTO SEGURO MERCADO PAGO</strong> • PIX, CRÉDITO OU DÉBITO</span>
+  </div>
+
+  <div class="shipping-strip">
+    Calcule o frete pelo CEP • Envio pelos Correios ou Transportadora
+  </div>
+
   <header>
-    <div class="logo">Mosaico <span>Bliar</span></div>
-    <div>
-      <button class="btn btn-o" onclick="abrir('m-cart')">🛍 (<span id="qtd">0</span>)</button>
-      <a class="btn btn-w" href="https://wa.me" target="_blank">💬 WhatsApp</a>
+    <div class="header-inner">
+      <a class="logo-wrap" href="#topo">
+        <svg width="38" height="38" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <rect x="2" y="2" width="36" height="36" rx="9" stroke="#f2cb4b" stroke-width="2.2"/>
+          <polygon points="20,8 30,20 20,32 10,20" stroke="#f2cb4b" stroke-width="2"/>
+          <circle cx="20" cy="20" r="4" fill="#f2cb4b"/>
+        </svg>
+        <div class="logo-text-group">
+          <span class="logo-main">MOSAICO</span>
+          <span class="logo-sub">BLIAR</span>
+        </div>
+      </a>
+
+      <button class="btn-outline-gold" type="button" onclick="toggleAdmin()">+ Produto</button>
     </div>
   </header>
 
-  <div class="hero">
-    <h1>Estilo e Conforto em Cada Passo</h1>
-    <p>Tênis, calçados e vasos decorativos. Pague com segurança no Pix, Débito ou Crédito parcelado.</p>
-    <span class="badge">🚚 Envio Correios / Transportadora</span>
-    <span class="badge">🔒 Seguro Mercado Pago</span>
-  </div>
+  <section class="hero">
+    <h1>Mosaico Bliar</h1>
+  </section>
 
-  <div class="wrap">
-    <h2>Destaques do Mosaico Bliar</h2>
-    <div class="grid" id="vitrine"></div>
-  </div>
+  <main class="container">
+    <section id="adminPanel" class="admin-panel">
+      <h2 style="margin:0 0 4px; color:var(--gold-bright); font-size:1.15rem;">Cadastrar produto com link do Mercado Pago</h2>
+      <p style="margin:0; font-size:0.84rem; color:#c8c8d2;">Escolha as fotos da galeria, coloque numerações, cores e cole o link de checkout desse produto no Mercado Pago.</p>
 
-  <div class="modal" id="m-cart">
-    <div class="m-box">
-      <button class="close" onclick="fechar('m-cart')">&times;</button>
-      <h2>Finalizar Compra</h2>
-      <div id="lista-cart"></div>
-      <div style="display:flex; gap:6px; margin-top:10px;">
-        <input type="text" id="cep" placeholder="CEP: 00000-000" maxlength="9" />
-        <button class="btn btn-p" onclick="calcFrete()" style="height:36px;">Frete</button>
+      <form id="productForm" class="form-grid">
+        <div style="grid-column: 1 / -1;" class="gallery-picker-box">
+          <label for="pGallery" style="font-size:0.92rem; margin-bottom:8px;">📸 Escolher fotos da galeria (até 5 fotos)</label>
+          <input id="pGallery" type="file" accept="image/*" multiple required>
+          <div id="galleryPreview" class="preview-strip"></div>
+        </div>
+
+        <div>
+          <label for="pName">Nome do produto</label>
+          <input id="pName" type="text" required placeholder="Ex.: Tênis Casual Off Mosaico Bliar">
+        </div>
+        <div>
+          <label for="pPrice">Preço (R$)</label>
+          <input id="pPrice" type="number" step="0.01" min="1" required placeholder="189.90">
+        </div>
+        <div>
+          <label for="pSizes">Numerações (separadas por vírgula)</label>
+          <input id="pSizes" type="text" value="34, 35, 36, 37, 38, 39, 40, 41, 42, 43" required>
+        </div>
+        <div>
+          <label for="pColors">Cores (separadas por vírgula)</label>
+          <input id="pColors" type="text" value="Preto, Off, Vermelho" required>
+        </div>
+        <div>
+          <label for="pMpLink">Link de checkout do Mercado Pago</label>
+          <input id="pMpLink" type="url" required placeholder="https://mpago.la/... ou link da sua loja Mercado Pago">
+        </div>
+        <div>
+          <label for="pVideo">Link do vídeo (YouTube ou TikTok)</label>
+          <input id="pVideo" type="url" placeholder="https://youtube.com/shorts/...">
+        </div>
+        <div style="grid-column: 1 / -1;">
+          <label for="pDesc">Descrição e detalhes</label>
+          <textarea id="pDesc" rows="2" placeholder="Detalhes do material, solado e acabamento."></textarea>
+        </div>
+
+        <div style="grid-column: 1 / -1; display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap;">
+          <button class="btn-outline-gold" type="button" onclick="exportCatalogCode()">Copiar catálogo p/ publicar no GitHub</button>
+          <div style="display:flex; gap:8px;">
+            <button class="btn-outline-gold" type="button" onclick="toggleAdmin()">Fechar</button>
+            <button class="btn-gold" type="submit">Salvar produto</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <div class="section-header" id="vitrine">
+      <h2 class="section-title">Destaques do Mosaico Bliar</h2>
+      <div class="search-box">
+        <input id="searchInput" type="search" placeholder="Buscar produto..." oninput="renderProducts()">
       </div>
-      <p id="msg-frete" style="font-size:.82rem; color:#1E7E34; margin-bottom:8px;"></p>
-      <input type="text" id="cli-nome" placeholder="Nome completo para entrega" />
-      <input type="text" id="cli-end" placeholder="Endereço completo (Rua, Nº, Bairro, Cidade/UF)" />
-      <div style="text-align:right; font-weight:800; font-size:1.15rem; color:var(--ameixa); margin:8px 0;">Total: R$ <span id="total">0,00</span></div>
-      <div class="sec">🔒 <strong>Ambiente Seguro:</strong> Nenhum dado de cartão é digitado aqui. Você será levado direto ao <strong>Mercado Pago</strong>.</div>
-      <button class="btn btn-p" style="width:100%; justify-content:center; padding:12px;" onclick="pagar()">💳 Pagar Agora com Mercado Pago</button>
     </div>
-  </div>
 
-  <div class="modal" id="m-admin">
-    <div class="m-box">
-      <button class="close" onclick="fechar('m-admin')">&times;</button>
-      <h2>Cadastrar Novo Produto</h2>
-      <input type="file" id="p-foto" accept="image/*" />
-      <input type="text" id="p-nome" placeholder="Nome (Ex.: Tênis Ameixa ou Vaso Decorativo)" />
-      <input type="number" id="p-preco" placeholder="Preço (Ex.: 199.90)" step="0.01" />
-      <input type="text" id="p-nums" placeholder="Tamanhos (Ex.: 34, 35, 36 ou Tamanho Único)" value="34, 35, 36, 37, 38, 39" />
-      <input type="text" id="p-cores" placeholder="Cores (Ex.: Roxo Ameixa, Preto, Branco)" value="Roxo Ameixa, Preto, Branco" />
-      <input type="url" id="p-link" placeholder="Cole aqui o Link de Pagamento do Mercado Pago" />
-      <button class="btn btn-p" style="width:100%; justify-content:center;" onclick="salvarProd()">Salvar na Vitrine</button>
-    </div>
-  </div>
+    <section id="productsGrid" class="products-grid"></section>
 
-  <nav>
-    <button onclick="window.scrollTo(0,0)">🏠 Início</button>
-    <button onclick="abrir('m-cart')">🛍 Carrinho</button>
-    <button onclick="abrirAdmin()">➕ Cadastrar Produto</button>
-    <a href="https://wa.me" target="_blank">💬 Ajuda</a>
+    <!-- Seção de contato no final da página, após ver os produtos -->
+    <section class="contact-banner" id="contato">
+      <h3>Ficou com alguma dúvida sobre numeração ou entrega?</h3>
+      <p>Se precisar falar com a gente depois de escolher seu produto, chame no WhatsApp da Mosaico Bliar.</p>
+      <a id="footerWhatsappBtn" class="btn-wa" href="#" target="_blank" rel="noopener">💬 Falar no WhatsApp</a>
+    </section>
+  </main>
+
+  <!-- Botão flutuante discreto no canto -->
+  <a id="floatWhatsappBtn" class="wa-float" href="#" target="_blank" rel="noopener" aria-label="Tirar dúvida no WhatsApp">
+    💬 Dúvidas?
+  </a>
+
+  <footer>
+    <strong>Mosaico Bliar</strong> • appbliar.com.br • Checkout Seguro Mercado Pago • Correios ou Transportadora
+  </footer>
+
+  <nav class="bottom-nav" aria-label="Navegação inferior">
+    <a href="#topo"><span>🏠</span><span>Início</span></a>
+    <a href="#vitrine"><span>🛍️</span><span>Loja</span></a>
+    <button type="button" onclick="toggleAdmin()"><span>➕</span><span>Produto</span></button>
   </nav>
 
   <script>
-    const SENHA_ADMIN = "mosaico2026";
-    let frete = 0, cart = [];
-    let produtos = JSON.parse(localStorage.getItem("mb_prods")) || [
-      { id: 1, nome: "Tênis Casual Conforto", preco: 189.90, nums: "35, 36, 37, 38, 39", cores: "Roxo Ameixa, Preto", img: "https://unsplash.com", link: "" },
-      { id: 2, nome: "Vaso Decorativo Moderno", preco: 129.90, nums: "Tamanho Único", cores: "Ameixa, Branco, Dourado", img: "https://unsplash.com", link: "" }
+    // CONFIGURAÇÃO DA LOJA (coloque seu WhatsApp real com 55 + DDD + número e o link padrão da sua loja Mercado Pago)
+    const CONFIG = {
+      whatsapp: "5511999999999",
+      mercadoPagoLojaPadrao: "https://www.mercadopago.com.br/"
+    };
+
+    const INITIAL_PRODUCTS = [
+      {
+        id: "mb-1",
+        name: "Tênis Casual Off Mosaico Bliar",
+        price: 189.90,
+        sizes: ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"],
+        colors: ["Preto", "Off", "Vermelho"],
+        mpLink: CONFIG.mercadoPagoLojaPadrao,
+        description: "Escolha cor e numeração, veja vários ângulos e vídeo, calcule o frete pelo CEP e pague direto no checkout seguro do Mercado Pago.",
+        videoUrl: "https://www.youtube.com/",
+        photos: [
+          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80"
+        ]
+      }
     ];
 
-    function render() {
-      document.getElementById("vitrine").innerHTML = produtos.map((p, i) => `
-        <div class="card">
-          <img src="${p.img}" alt="${p.nome}">
-          <div class="c-body">
-            <div class="c-title">${p.nome}</div>
-            <div class="c-price">R$ ${Number(p.preco).toFixed(2).replace('.', ',')}</div>
-            <select id="num-${i}">${p.nums.split(',').map(n => `<option>Opção: ${n.trim()}</option>`).join('')}</select>
-            <select id="cor-${i}">${p.cores.split(',').map(c => `<option>Cor: ${c.trim()}</option>`).join('')}</select>
-            <button class="btn btn-p" style="width:100%; justify-content:center;" onclick="addCart(${i})">Adicionar ao Carrinho</button>
-          </div>
-        </div>
-      `).join('');
+    const STORAGE_KEY = "mosaico_bliar_mp_v1";
+    let selectedGalleryImages = [];
+
+    function loadProducts() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length) return parsed;
+        }
+      } catch (err) {}
+      return INITIAL_PRODUCTS;
     }
 
-    function addCart(i) {
-      const p = produtos[i];
-      cart.push({ nome: p.nome, preco: Number(p.preco), num: document.getElementById(`num-${i}`).value, cor: document.getElementById(`cor-${i}`).value, link: p.link });
-      atualizarCart();
-      abrir('m-cart');
+    function saveProducts(items) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      } catch (err) {
+        alert("Memória do navegador cheia. Remova algum produto antigo ou use menos fotos.");
+      }
     }
 
-    function atualizarCart() {
-      document.getElementById("qtd").innerText = cart.length;
-      let sub = 0;
-      document.getElementById("lista-cart").innerHTML = cart.map((item, idx) => {
-        sub += item.preco;
-        return `<div class="item-row"><span>${item.nome} (${item.num} | ${item.cor})</span><strong>R$ ${item.preco.toFixed(2).replace('.', ',')} <button onclick="remCart(${idx})" style="color:red;border:none;background:none;cursor:pointer;">✕</button></strong></div>`;
-      }).join('') || "<p>Carrinho vazio.</p>";
-      document.getElementById("total").innerText = (sub + frete).toFixed(2).replace('.', ',');
+    function money(v) {
+      return Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
     }
 
-    function remCart(idx) { cart.splice(idx, 1); atualizarCart(); }
-    function calcFrete() {
-      if (document.getElementById("cep").value.replace(/\D/g,'').length < 8) return alert("Digite um CEP válido.");
-      frete = 19.90;
-      document.getElementById("msg-frete").innerText = "Frete fixo: R$ 19,90";
-      atualizarCart();
+    function toggleAdmin() {
+      const panel = document.getElementById("adminPanel");
+      panel.classList.toggle("open");
+      if (panel.classList.contains("open")) {
+        panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
 
-    function pagar() {
-      if (!cart.length) return alert("Adicione um produto primeiro!");
-      const nome = document.getElementById("cli-nome").value.trim();
-      const end = document.getElementById("cli-end").value.trim();
-      if (!nome || !end) return alert("Preencha seu nome e endereço completo para entrega.");
-const linkDireto = cart.find(c => c.link)?.link;
-if (linkDireto) { window.open(linkDireto, "_blank"); return; }
-const resumo = cart.map(c => - ${c.nome} (${c.num}, ${c.cor})).join('%0A');
-window.open(https://wa.me! Pedido Mosaico Bliar:%0A${resumo}%0ATotal: R$ ${document.getElementById("total").innerText}%0ACliente: ${nome}%0AEndereço: ${end}, "_blank");
-}
-function abrir(id) { document.getElementById(id).style.display = "block"; }
-function fechar(id) { document.getElementById(id).style.display = "none"; }
-function abrirAdmin() { if (prompt("Digite a senha da loja:") === SENHA_ADMIN) abrir('m-admin'); else alert("Senha incorreta!"); }
-function salvarProd() {
-const nome = document.getElementById("p-nome").value, preco = document.getElementById("p-preco").value;
-const file = document.getElementById("p-foto").files[0];
-if (!nome || !preco) return alert("Preencha nome e preço!");
-const finalizar = (imgUrl) => {
-produtos.unshift({ id: Date.now(), nome, preco, nums: document.getElementById("p-nums").value, cores: document.getElementById("p-cores").value, img: imgUrl, link: document.getElementById("p-link").value.trim() });
-localStorage.setItem("mb_prods", JSON.stringify(produtos));
-render(); fechar('m-admin'); alert("Produto cadastrado na vitrine!");
-};
-if (file) { const r = new FileReader(); r.onload = e => finalizar(e.target.result); r.readAsDataURL(file); }
-else finalizar("unsplash.com");
-}
-render();
+    function compressImageFile(file, maxSize = 800, quality = 0.76) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            let w = img.width;
+            let h = img.height;
+            if (w > maxSize || h > maxSize) {
+              if (w > h) {
+                h = Math.round((h * maxSize) / w);
+                w = maxSize;
+              } else {
+                w = Math.round((w * maxSize) / h);
+                h = maxSize;
+              }
+            }
+            const canvas = document.createElement("canvas");
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL("image/jpeg", quality));
+          };
+          img.onerror = reject;
+          img.src = ev.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    document.getElementById("pGallery").addEventListener("change", async function (e) {
+      const files = [...(e.target.files || [])].slice(0, 5);
+      const preview = document.getElementById("galleryPreview");
+      preview.innerHTML = "<span style='color:var(--gold-bright); font-size:0.84rem;'>Carregando fotos da galeria...</span>";
+      selectedGalleryImages = [];
+
+      for (const f of files) {
+        const compressed = await compressImageFile(f);
+        selectedGalleryImages.push(compressed);
+      }
+
+      preview.innerHTML = selectedGalleryImages
+        .map((src) => `<img src="${src}" alt="Prévia da foto">`)
+        .join("");
+    });
+
+    function setPhoto(id, idx, url) {
+      const img = document.getElementById("img-" + id);
+      if (img) img.src = url;
+      const thumbs = document.getElementById("thumbs-" + id);
+      if (thumbs) {
+        [...thumbs.children].forEach((btn, i) => btn.classList.toggle("active", i === idx));
+      }
+    }
+
+    function deleteProduct(id) {
+      const filtered = loadProducts().filter((p) => p.id !== id);
+      saveProducts(filtered.length ? filtered : INITIAL_PRODUCTS);
+      renderProducts();
+    }
+
+    function calcFreight(cepInput, mode) {
+      const clean = (cepInput || "").replace(/\D/g, "");
+      if (clean.length !== 8) {
+        return { error: "Informe um CEP válido com 8 dígitos." };
+      }
+      const regionDigit = Number(clean[0]);
+      const correiosBase = [34, 28, 32, 36, 29, 24, 30, 22, 26, 35][regionDigit] || 29;
+      const transpBase = Math.max(19, correiosBase - 5);
+      const isTransp = mode === "transportadora";
+
+      return {
+        cep: clean.replace(/(\d{5})(\d{3})/, "$1-$2"),
+        modeLabel: isTransp ? "Transportadora" : "Correios",
+        valor: isTransp ? transpBase : correiosBase,
+        prazo: isTransp ? "3 a 7 dias úteis" : "4 a 9 dias úteis"
+      };
+    }
+
+    function runFreight(id, price) {
+      const cepEl = document.getElementById("cep-" + id);
+      const modeEl = document.getElementById("mode-" + id);
+      const outEl = document.getElementById("freight-out-" + id);
+
+      const res = calcFreight(cepEl.value, modeEl.value);
+      if (res.error) {
+        outEl.innerHTML = `<span style="color:#b91c1c;">${res.error}</span>`;
+        return;
+      }
+
+      const total = Number(price) + res.valor;
+      outEl.innerHTML = `${res.modeLabel} (${res.cep}): <strong>${money(res.valor)}</strong> • ${res.prazo} • Total: <strong>${money(total)}</strong>`;
+    }
+
+    function buildProductWhatsapp(id, name, price) {
+      const color = document.getElementById("color-" + id)?.value || "";
+      const size = document.getElementById("size-" + id)?.value || "";
+      const msg = `Olá! Tenho uma dúvida sobre o produto *${name}* (${money(price)}) — Cor: ${color}, Numeração: ${size} na *Mosaico Bliar*.`;
+      return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+    }
+
+    function exportCatalogCode() {
+      const code = "const INITIAL_PRODUCTS = " + JSON.stringify(loadProducts(), null, 2) + ";";
+      navigator.clipboard?.writeText(code);
+      alert("Código do catálogo copiado! Cole no lugar de INITIAL_PRODUCTS no GitHub para publicar para todos os clientes.");
+    }
+
+    function renderProducts() {
+      const term = (document.getElementById("searchInput")?.value || "").toLowerCase().trim();
+      const all = loadProducts();
+      const filtered = term
+        ? all.filter((item) =>
+            item.name.toLowerCase().includes(term) ||
+            (item.description || "").toLowerCase().includes(term) ||
+            (item.colors || []).join(",").toLowerCase().includes(term) ||
+            (item.sizes || []).join(",").toLowerCase().includes(term)
+          )
+        : all;
+
+      const grid = document.getElementById("productsGrid");
+      if (!filtered.length) {
+        grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#555;">Nenhum produto encontrado para "${term}".</p>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map((p) => {
+        const photos = (p.photos && p.photos.length) ? p.photos : INITIAL_PRODUCTS[0].photos;
+        const sizes = (p.sizes && p.sizes.length) ? p.sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"];
+        const colors = (p.colors && p.colors.length) ? p.colors : ["Preto", "Off", "Vermelho"];
+        const checkoutUrl = p.mpLink || CONFIG.mercadoPagoLojaPadrao;
+
+        const thumbs = photos.map((u, idx) => `
+          <button
+            type="button"
+            class="thumb ${idx === 0 ? "active" : ""}"
+            onclick="setPhoto('${p.id}', ${idx}, '${u.replace(/'/g, "\\'")}')"
+            aria-label="Foto ${idx + 1} de ${p.name}"
+          >
+            <img src="${u}" alt="${p.name} ângulo ${idx + 1}">
+          </button>
+        `).join("");
+
+        const sizeOptions = sizes.map((s) => `<option value="${s}">${s}</option>`).join("");
+        const colorOptions = colors.map((c) => `<option value="${c}">${c}</option>`).join("");
+
+        const videoBlock = p.videoUrl
+          ? `<div class="video-row">▶ <a href="${p.videoUrl}" target="_blank" rel="noopener">Ver vídeo do produto</a></div>`
+          : "";
+
+        return `
+          <article class="card">
+            <div class="gallery">
+              <button type="button" class="delete-prod-btn" onclick="deleteProduct('${p.id}')">Remover</button>
+              <img id="img-${p.id}" class="main-img" src="${photos[0]}" alt="${p.name}">
+              <div id="thumbs-${p.id}" class="thumbs">${thumbs}</div>
+              ${videoBlock}
+            </div>
+            <div class="card-body">
+              <h3 class="prod-name">${p.name}</h3>
+              <p class="prod-desc">${p.description || ""}</p>
+              <div class="prod-price"><span>${money(p.price)}</span></div>
+
+              <div class="variants-row">
+                <div>
+                  <label for="color-${p.id}">Cor</label>
+                  <select id="color-${p.id}">${colorOptions}</select>
+                </div>
+                <div>
+                  <label for="size-${p.id}">Numeração</label>
+                  <select id="size-${p.id}">${sizeOptions}</select>
+                </div>
+              </div>
+
+              <div class="freight-box">
+                <label for="cep-${p.id}" style="color:#141418; margin:0;">Calcular frete pelo CEP</label>
+                <div class="freight-controls">
+                  <input id="cep-${p.id}" type="text" maxlength="9" placeholder="00000-000">
+                  <select id="mode-${p.id}" aria-label="Escolha Correios ou Transportadora">
+                    <option value="correios">Correios</option>
+                    <option value="transportadora">Transportadora</option>
+                  </select>
+                  <button
+                    type="button"
+                    class="btn-dark"
+                    onclick="runFreight('${p.id}', ${Number(p.price)})"
+                  >
+                    Calcular
+                  </button>
+                </div>
+                <div id="freight-out-${p.id}" class="freight-result"></div>
+              </div>
+
+              <div class="card-actions">
+                <a class="btn-gold" href="${checkoutUrl}" target="_blank" rel="noopener">
+                  Comprar agora • Mercado Pago
+                </a>
+                <div class="mp-badge">🔒 Pagamento seguro: Pix, Crédito ou Débito no Mercado Pago</div>
+                <a
+                  class="link-wa-subtle"
+                  href="#"
+                  onclick="this.href = buildProductWhatsapp('${p.id}', '${p.name.replace(/'/g, "\\'")}', ${Number(p.price)});"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Tirar dúvida deste produto no WhatsApp
+                </a>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    document.getElementById("productForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = document.getElementById("pName").value.trim();
+      const price = parseFloat(document.getElementById("pPrice").value);
+      const sizes = document.getElementById("pSizes").value
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      const colors = document.getElementById("pColors").value
+        .split(",")
+        .map((c) => c.trim())
+        .filter(Boolean);
+      const mpLink = document.getElementById("pMpLink").value.trim();
+      const videoUrl = document.getElementById("pVideo").value.trim();
+      const description = document.getElementById("pDesc").value.trim();
+
+      if (!name || isNaN(price) || !selectedGalleryImages.length || !mpLink) {
+        alert("Selecione as fotos da galeria e cole o link de checkout do Mercado Pago.");
+        return;
+      }
+
+      const current = loadProducts().filter((item) => item.id !== "mb-1");
+      const updated = [
+        {
+          id: "mb-" + Date.now(),
+          name,
+          price,
+          sizes: sizes.length ? sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"],
+          colors: colors.length ? colors : ["Preto", "Off", "Vermelho"],
+          mpLink,
+          videoUrl,
+          photos: selectedGalleryImages,
+          description
+        },
+        ...current
+      ];
+
+      saveProducts(updated);
+      renderProducts();
+      selectedGalleryImages = [];
+      document.getElementById("galleryPreview").innerHTML = "";
+      this.reset();
+      document.getElementById("pSizes").value = "34, 35, 36, 37, 38, 39, 40, 41, 42, 43";
+      document.getElementById("pColors").value = "Preto, Off, Vermelho";
+      toggleAdmin();
+    });
+
+    const waGeneral = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent("Olá! Vim pela loja Mosaico Bliar e tenho uma dúvida.")}`;
+    document.getElementById("footerWhatsappBtn").href = waGeneral;
+    document.getElementById("floatWhatsappBtn").href = waGeneral;
+
+    renderProducts();
+  </script>
+</body>
+</html>
