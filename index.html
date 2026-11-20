@@ -18,7 +18,6 @@
       --text-dark: #141418;
       --text-muted: #6b6b76;
       --border-dark: #2a2a33;
-      --mp-blue: #009ee3;
       --wa-green: #25d366;
     }
 
@@ -260,15 +259,31 @@
 
     .gallery { background: var(--black); padding: 10px; position: relative; }
 
-    .delete-prod-btn {
+    .card-top-actions {
       position: absolute;
       top: 16px;
       right: 16px;
-      background: rgba(10,10,12,0.82);
+      display: flex;
+      gap: 6px;
+    }
+
+    .edit-prod-btn {
+      background: rgba(10,10,12,0.86);
+      color: var(--gold-bright);
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      padding: 4px 9px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .delete-prod-btn {
+      background: rgba(10,10,12,0.86);
       color: #fca5a5;
       border: 1px solid #ef4444;
       border-radius: 8px;
-      padding: 4px 8px;
+      padding: 4px 9px;
       font-size: 0.75rem;
       font-weight: 700;
       cursor: pointer;
@@ -368,7 +383,6 @@
       padding-top: 2px;
     }
 
-    /* Seção de atendimento WhatsApp lá embaixo */
     .contact-banner {
       margin-top: 32px;
       background: var(--black-2);
@@ -383,18 +397,8 @@
       gap: 10px;
     }
 
-    .contact-banner h3 {
-      margin: 0;
-      color: var(--gold-bright);
-      font-size: 1.15rem;
-    }
-
-    .contact-banner p {
-      margin: 0;
-      font-size: 0.88rem;
-      color: #d4d4dc;
-      max-width: 480px;
-    }
+    .contact-banner h3 { margin: 0; color: var(--gold-bright); font-size: 1.15rem; }
+    .contact-banner p { margin: 0; font-size: 0.88rem; color: #d4d4dc; max-width: 480px; }
 
     .btn-wa {
       background: var(--wa-green);
@@ -410,7 +414,6 @@
       gap: 8px;
     }
 
-    /* Botão flutuante discreto no canto inferior direito */
     .wa-float {
       position: fixed;
       right: 16px;
@@ -492,7 +495,7 @@
         </div>
       </a>
 
-      <button class="btn-outline-gold" type="button" onclick="toggleAdmin()">+ Produto</button>
+      <button class="btn-outline-gold" type="button" onclick="openNewProductPanel()">+ Produto</button>
     </div>
   </header>
 
@@ -502,19 +505,19 @@
 
   <main class="container">
     <section id="adminPanel" class="admin-panel">
-      <h2 style="margin:0 0 4px; color:var(--gold-bright); font-size:1.15rem;">Cadastrar produto com link do Mercado Pago</h2>
-      <p style="margin:0; font-size:0.84rem; color:#c8c8d2;">Escolha as fotos da galeria, coloque numerações, cores e cole o link de checkout desse produto no Mercado Pago.</p>
+      <h2 id="adminTitle" style="margin:0 0 4px; color:var(--gold-bright); font-size:1.15rem;">Cadastrar produto</h2>
+      <p style="margin:0; font-size:0.84rem; color:#c8c8d2;">Separe cada cor e cada numeração por <strong>vírgula</strong> (ex.: Branco com listras pretas, Pretas com listras brancas).</p>
 
       <form id="productForm" class="form-grid">
         <div style="grid-column: 1 / -1;" class="gallery-picker-box">
-          <label for="pGallery" style="font-size:0.92rem; margin-bottom:8px;">📸 Escolher fotos da galeria (até 5 fotos)</label>
-          <input id="pGallery" type="file" accept="image/*" multiple required>
+          <label for="pGallery" style="font-size:0.92rem; margin-bottom:8px;">📸 Fotos da galeria (opcional ao editar se quiser manter as atuais)</label>
+          <input id="pGallery" type="file" accept="image/*" multiple>
           <div id="galleryPreview" class="preview-strip"></div>
         </div>
 
         <div>
           <label for="pName">Nome do produto</label>
-          <input id="pName" type="text" required placeholder="Ex.: Tênis Casual Off Mosaico Bliar">
+          <input id="pName" type="text" required placeholder="Ex.: Tênis Casual Mosaico Bliar">
         </div>
         <div>
           <label for="pPrice">Preço (R$)</label>
@@ -530,7 +533,7 @@
         </div>
         <div>
           <label for="pMpLink">Link de checkout do Mercado Pago</label>
-          <input id="pMpLink" type="url" required placeholder="https://mpago.la/... ou link da sua loja Mercado Pago">
+          <input id="pMpLink" type="url" required placeholder="https://mpago.la/... ou link do Mercado Pago">
         </div>
         <div>
           <label for="pVideo">Link do vídeo (YouTube ou TikTok)</label>
@@ -544,8 +547,8 @@
         <div style="grid-column: 1 / -1; display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap;">
           <button class="btn-outline-gold" type="button" onclick="exportCatalogCode()">Copiar catálogo p/ publicar no GitHub</button>
           <div style="display:flex; gap:8px;">
-            <button class="btn-outline-gold" type="button" onclick="toggleAdmin()">Fechar</button>
-            <button class="btn-gold" type="submit">Salvar produto</button>
+            <button class="btn-outline-gold" type="button" onclick="closeAdmin()">Cancelar</button>
+            <button id="saveProdBtn" class="btn-gold" type="submit">Salvar produto</button>
           </div>
         </div>
       </form>
@@ -560,7 +563,6 @@
 
     <section id="productsGrid" class="products-grid"></section>
 
-    <!-- Seção de contato no final da página, após ver os produtos -->
     <section class="contact-banner" id="contato">
       <h3>Ficou com alguma dúvida sobre numeração ou entrega?</h3>
       <p>Se precisar falar com a gente depois de escolher seu produto, chame no WhatsApp da Mosaico Bliar.</p>
@@ -568,7 +570,6 @@
     </section>
   </main>
 
-  <!-- Botão flutuante discreto no canto -->
   <a id="floatWhatsappBtn" class="wa-float" href="#" target="_blank" rel="noopener" aria-label="Tirar dúvida no WhatsApp">
     💬 Dúvidas?
   </a>
@@ -580,11 +581,10 @@
   <nav class="bottom-nav" aria-label="Navegação inferior">
     <a href="#topo"><span>🏠</span><span>Início</span></a>
     <a href="#vitrine"><span>🛍️</span><span>Loja</span></a>
-    <button type="button" onclick="toggleAdmin()"><span>➕</span><span>Produto</span></button>
+    <button type="button" onclick="openNewProductPanel()"><span>➕</span><span>Produto</span></button>
   </nav>
 
   <script>
-    // CONFIGURAÇÃO DA LOJA (coloque seu WhatsApp real com 55 + DDD + número e o link padrão da sua loja Mercado Pago)
     const CONFIG = {
       whatsapp: "5511999999999",
       mercadoPagoLojaPadrao: "https://www.mercadopago.com.br/"
@@ -608,8 +608,9 @@
       }
     ];
 
-    const STORAGE_KEY = "mosaico_bliar_mp_v1";
+    const STORAGE_KEY = "mosaico_bliar_mp_v2";
     let selectedGalleryImages = [];
+    let editingProductId = null;
 
     function loadProducts() {
       try {
@@ -634,12 +635,55 @@
       return Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
     }
 
-    function toggleAdmin() {
+    function openAdminPanel() {
       const panel = document.getElementById("adminPanel");
-      panel.classList.toggle("open");
-      if (panel.classList.contains("open")) {
-        panel.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      panel.classList.add("open");
+      panel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function closeAdmin() {
+      editingProductId = null;
+      selectedGalleryImages = [];
+      document.getElementById("galleryPreview").innerHTML = "";
+      document.getElementById("productForm").reset();
+      document.getElementById("pSizes").value = "34, 35, 36, 37, 38, 39, 40, 41, 42, 43";
+      document.getElementById("pColors").value = "Preto, Off, Vermelho";
+      document.getElementById("adminPanel").classList.remove("open");
+    }
+
+    function openNewProductPanel() {
+      editingProductId = null;
+      selectedGalleryImages = [];
+      document.getElementById("galleryPreview").innerHTML = "";
+      document.getElementById("productForm").reset();
+      document.getElementById("pSizes").value = "34, 35, 36, 37, 38, 39, 40, 41, 42, 43";
+      document.getElementById("pColors").value = "Preto, Off, Vermelho";
+      document.getElementById("adminTitle").textContent = "Cadastrar novo produto";
+      document.getElementById("saveProdBtn").textContent = "Salvar produto";
+      openAdminPanel();
+    }
+
+    function startEditProduct(id) {
+      const prod = loadProducts().find((p) => p.id === id);
+      if (!prod) return;
+
+      editingProductId = prod.id;
+      selectedGalleryImages = [];
+      document.getElementById("adminTitle").textContent = "Editando: " + prod.name;
+      document.getElementById("saveProdBtn").textContent = "Salvar alterações";
+      document.getElementById("pName").value = prod.name || "";
+      document.getElementById("pPrice").value = prod.price || "";
+      document.getElementById("pSizes").value = (prod.sizes || []).join(", ");
+      document.getElementById("pColors").value = (prod.colors || []).join(", ");
+      document.getElementById("pMpLink").value = prod.mpLink || "";
+      document.getElementById("pVideo").value = prod.videoUrl || "";
+      document.getElementById("pDesc").value = prod.description || "";
+
+      document.getElementById("galleryPreview").innerHTML = (prod.photos || [])
+        .map((src) => `<img src="${src}" alt="Foto atual">`)
+        .join("");
+
+      openAdminPanel();
     }
 
     function compressImageFile(file, maxSize = 800, quality = 0.76) {
@@ -796,7 +840,10 @@
         return `
           <article class="card">
             <div class="gallery">
-              <button type="button" class="delete-prod-btn" onclick="deleteProduct('${p.id}')">Remover</button>
+              <div class="card-top-actions">
+                <button type="button" class="edit-prod-btn" onclick="startEditProduct('${p.id}')">Editar</button>
+                <button type="button" class="delete-prod-btn" onclick="deleteProduct('${p.id}')">Remover</button>
+              </div>
               <img id="img-${p.id}" class="main-img" src="${photos[0]}" alt="${p.name}">
               <div id="thumbs-${p.id}" class="thumbs">${thumbs}</div>
               ${videoBlock}
@@ -873,35 +920,54 @@
       const videoUrl = document.getElementById("pVideo").value.trim();
       const description = document.getElementById("pDesc").value.trim();
 
-      if (!name || isNaN(price) || !selectedGalleryImages.length || !mpLink) {
-        alert("Selecione as fotos da galeria e cole o link de checkout do Mercado Pago.");
+      if (!name || isNaN(price) || !mpLink) {
+        alert("Preencha nome, preço e link do Mercado Pago.");
         return;
       }
 
-      const current = loadProducts().filter((item) => item.id !== "mb-1");
-      const updated = [
-        {
-          id: "mb-" + Date.now(),
-          name,
-          price,
-          sizes: sizes.length ? sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"],
-          colors: colors.length ? colors : ["Preto", "Off", "Vermelho"],
-          mpLink,
-          videoUrl,
-          photos: selectedGalleryImages,
-          description
-        },
-        ...current
-      ];
+      const current = loadProducts();
 
-      saveProducts(updated);
+      if (editingProductId) {
+        const updated = current.map((item) => {
+          if (item.id !== editingProductId) return item;
+          return {
+            ...item,
+            name,
+            price,
+            sizes: sizes.length ? sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"],
+            colors: colors.length ? colors : ["Preto", "Off", "Vermelho"],
+            mpLink,
+            videoUrl,
+            description,
+            photos: selectedGalleryImages.length ? selectedGalleryImages : item.photos
+          };
+        });
+        saveProducts(updated);
+      } else {
+        if (!selectedGalleryImages.length) {
+          alert("Selecione pelo menos 1 foto da galeria.");
+          return;
+        }
+        const cleanedBase = current.filter((item) => item.id !== "mb-1");
+        const updated = [
+          {
+            id: "mb-" + Date.now(),
+            name,
+            price,
+            sizes: sizes.length ? sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"],
+            colors: colors.length ? colors : ["Preto", "Off", "Vermelho"],
+            mpLink,
+            videoUrl,
+            photos: selectedGalleryImages,
+            description
+          },
+          ...cleanedBase
+        ];
+        saveProducts(updated);
+      }
+
       renderProducts();
-      selectedGalleryImages = [];
-      document.getElementById("galleryPreview").innerHTML = "";
-      this.reset();
-      document.getElementById("pSizes").value = "34, 35, 36, 37, 38, 39, 40, 41, 42, 43";
-      document.getElementById("pColors").value = "Preto, Off, Vermelho";
-      toggleAdmin();
+      closeAdmin();
     });
 
     const waGeneral = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent("Olá! Vim pela loja Mosaico Bliar e tenho uma dúvida.")}`;
