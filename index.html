@@ -140,33 +140,33 @@
       gap: 6px;
     }
 
+    /* Banner limpo e mais claro mostrando o tênis ao fundo */
     .hero {
-      background: linear-gradient(180deg, rgba(10,10,12,0.74) 0%, rgba(10,10,12,0.90) 100%),
-                  url("https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1200&q=80") center/cover no-repeat;
+      position: relative;
+      min-height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, rgba(10,10,12,0.28) 0%, rgba(10,10,12,0.42) 100%),
+                  url("https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1200&q=85") center/cover no-repeat;
+      filter: brightness(1.12) contrast(1.04);
       color: var(--white);
-      padding: 48px 18px;
+      padding: 52px 18px;
       text-align: center;
     }
 
-    .hero-content { max-width: 720px; margin: 0 auto; }
-    .hero-kicker { font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; }
+    .hero-content {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
     .hero h1 {
       margin: 0;
-      font-size: clamp(2rem, 6vw, 3rem);
+      font-size: clamp(2.1rem, 6.5vw, 3.2rem);
       font-weight: 900;
       color: var(--gold-bright);
       line-height: 1.08;
-    }
-
-    .hero-pill {
-      display: inline-block;
-      margin-top: 14px;
-      padding: 8px 18px;
-      border-radius: 999px;
-      border: 1.5px solid var(--gold);
-      background: rgba(10, 10, 12, 0.65);
-      font-size: 0.86rem;
-      font-weight: 600;
+      text-shadow: 0 3px 16px rgba(0, 0, 0, 0.78);
     }
 
     .container { max-width: 1120px; margin: 0 auto; padding: 24px 16px; }
@@ -348,7 +348,6 @@
       text-align: center;
     }
 
-    /* Janela de Checkout com escolha de Pix, Crédito ou Débito */
     .modal-backdrop {
       display: none;
       position: fixed;
@@ -485,9 +484,7 @@
 
   <section class="hero">
     <div class="hero-content">
-      <div class="hero-kicker">Coleção Exclusiva</div>
       <h1>Mosaico Bliar</h1>
-      <div class="hero-pill">Fotos reais, vídeo, frete por CEP • Pix, Crédito ou Débito</div>
     </div>
   </section>
 
@@ -544,7 +541,6 @@
     <section id="productsGrid" class="products-grid"></section>
   </main>
 
-  <!-- Modal de Checkout com escolha de Pix, Crédito ou Débito -->
   <div id="checkoutModal" class="modal-backdrop" role="dialog" aria-modal="true">
     <div class="modal-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -583,13 +579,12 @@
   </nav>
 
   <script>
-    // CONFIGURAÇÃO DA SUA LOJA (altere com seus dados reais)
     const CONFIG = {
       whatsapp: "5511999999999",
       pixChave: "SUA-CHAVE-PIX-AQUI",
       pixRecebedor: "Mosaico Bliar",
       pixBanco: "Nubank",
-      cardCheckoutPadrao: "" // Opcional: coloque aqui um link padrão que aceite cartão (crédito/débito) se quiser
+      cardCheckoutPadrao: ""
     };
 
     const INITIAL_PRODUCTS = [
