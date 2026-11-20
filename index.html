@@ -5,264 +5,153 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mosaico Bliar — Loja Oficial</title>
   <style>
-    :root {
-      --ameixa-escuro: #3B1332;
-      --ameixa-medio: #5C1F4E;
-      --ameixa-claro: #8A3676;
-      --ameixa-suave: #F9F2F7;
-      --dourado: #D4AF37;
-      --texto: #241822;
-      --texto-suave: #6B5867;
-      --branco: #FFFFFF;
-      --borda: #E6D5E2;
-      --sucesso: #1E7E34;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: var(--ameixa-suave); color: var(--texto); padding-bottom: 80px; }
-
-    .top-bar {
-      background: linear-gradient(90deg, var(--ameixa-escuro), var(--ameixa-medio));
-      color: var(--branco);
-      text-align: center;
-      padding: 8px 12px;
-      font-size: 0.85rem;
-    }
-    .top-bar strong { color: #F5D77F; }
-
-    header {
-      background: var(--branco);
-      border-bottom: 2px solid var(--borda);
-      padding: 14px 20px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 10px rgba(59, 19, 50, 0.08);
-    }
-    .logo { font-size: 1.4rem; font-weight: 800; color: var(--ameixa-escuro); text-transform: uppercase; letter-spacing: 1px; }
-    .logo span { color: var(--ameixa-claro); }
-    .header-actions { display: flex; gap: 10px; align-items: center; }
-
-    .btn {
-      border: none;
-      border-radius: 8px;
-      padding: 10px 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-      font-size: 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-    }
-    .btn-primary { background: var(--ameixa-escuro); color: var(--branco); }
-    .btn-primary:hover { background: var(--ameixa-medio); }
-    .btn-outline { background: transparent; border: 1.5px solid var(--ameixa-escuro); color: var(--ameixa-escuro); }
-    .btn-outline:hover { background: var(--ameixa-suave); }
-    .btn-whats { background: #25D366; color: var(--branco); }
-    .btn-whats:hover { background: #1EBE5D; }
-    .btn-danger { background: #C82333; color: var(--branco); padding: 6px 10px; font-size: 0.8rem; }
-
-    .hero {
-      background: linear-gradient(135deg, var(--ameixa-escuro) 0%, var(--ameixa-medio) 100%);
-      color: var(--branco);
-      padding: 36px 20px;
-      text-align: center;
-    }
-    .hero h1 { font-size: 1.9rem; margin-bottom: 8px; }
-    .hero p { color: #F0DCE9; max-width: 600px; margin: 0 auto 16px; font-size: 1rem; }
-    .badges { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; font-size: 0.85rem; }
-    .badge { background: rgba(255,255,255,0.14); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.25); }
-
-    .container { max-width: 1150px; margin: 24px auto; padding: 0 16px; }
-    .section-title { font-size: 1.4rem; color: var(--ameixa-escuro); margin-bottom: 18px; border-left: 4px solid var(--ameixa-claro); padding-left: 10px; }
-
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 20px; }
-    .card {
-      background: var(--branco);
-      border: 1px solid var(--borda);
-      border-radius: 14px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 4px 12px rgba(59, 19, 50, 0.05);
-    }
-    .card-img { width: 100%; height: 240px; object-fit: cover; background: #EFE4EC; }
-    .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
-    .card-title { font-size: 1.1rem; font-weight: 700; color: var(--ameixa-escuro); margin-bottom: 6px; }
-    .card-desc { font-size: 0.85rem; color: var(--texto-suave); margin-bottom: 12px; flex: 1; }
-    .card-price { font-size: 1.35rem; font-weight: 800; color: var(--ameixa-medio); margin-bottom: 4px; }
-    .card-installments { font-size: 0.8rem; color: var(--sucesso); margin-bottom: 12px; font-weight: 600; }
-
-    .selectors { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
-    .selectors label { font-size: 0.78rem; font-weight: 700; color: var(--texto-suave); text-transform: uppercase; }
-    .selectors select {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid var(--borda);
-      border-radius: 6px;
-      background: var(--ameixa-suave);
-      color: var(--texto);
-      font-weight: 600;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(25, 8, 21, 0.75);
-      z-index: 999;
-      overflow-y: auto;
-      padding: 20px 12px;
-    }
-    .modal-content {
-      background: var(--branco);
-      max-width: 540px;
-      margin: 20px auto;
-      border-radius: 14px;
-      padding: 24px;
-      position: relative;
-      border-top: 6px solid var(--ameixa-escuro);
-    }
-    .close-btn {
-      position: absolute;
-      top: 14px;
-      right: 16px;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--texto-suave);
-    }
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; color: var(--ameixa-escuro); }
-    .form-group input, .form-group textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid var(--borda);
-      border-radius: 8px;
-      font-size: 0.95rem;
-    }
-
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--borda);
-      font-size: 0.9rem;
-    }
-    .frete-box { background: var(--ameixa-suave); padding: 12px; border-radius: 8px; margin: 14px 0; border: 1px solid var(--borda); }
-    .frete-row { display: flex; gap: 8px; margin-top: 6px; }
-    .resumo-total { font-size: 1.2rem; font-weight: 800; color: var(--ameixa-escuro); text-align: right; margin: 14px 0; }
-    .security-note {
-      background: #EEFAF1;
-      border: 1px solid #B7E4C7;
-      color: #1B4332;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      margin-bottom: 14px;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--ameixa-escuro);
-      color: var(--branco);
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 0;
-      z-index: 100;
-    }
-    .bottom-nav button, .bottom-nav a {
-      background: none;
-      border: none;
-      color: var(--branco);
-      font-size: 0.85rem;
-      text-decoration: none;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
+    :root { --ameixa: #3B1332; --ameixa2: #5C1F4E; --claro: #8A3676; --bg: #F9F2F7; --txt: #241822; --borda: #E6D5E2; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+    body { background: var(--bg); color: var(--txt); padding-bottom: 70px; }
+    .top { background: linear-gradient(90deg, var(--ameixa), var(--ameixa2)); color: #fff; text-align: center; padding: 8px; font-size: .82rem; }
+    .top strong { color: #F5D77F; }
+    header { background: #fff; border-bottom: 2px solid var(--borda); padding: 12px 16px; position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.3rem; font-weight: 800; color: var(--ameixa); text-transform: uppercase; }
+    .logo span { color: var(--claro); }
+    .btn { border: none; border-radius: 8px; padding: 9px 14px; font-weight: 600; cursor: pointer; font-size: .88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+    .btn-p { background: var(--ameixa); color: #fff; }
+    .btn-o { background: transparent; border: 1.5px solid var(--ameixa); color: var(--ameixa); }
+    .btn-w { background: #25D366; color: #fff; }
+    .hero { background: linear-gradient(135deg, var(--ameixa), var(--ameixa2)); color: #fff; padding: 28px 16px; text-align: center; }
+    .hero h1 { font-size: 1.6rem; margin-bottom: 6px; }
+    .hero p { color: #F0DCE9; font-size: .95rem; margin-bottom: 12px; }
+    .badge { display: inline-block; background: rgba(255,255,255,.15); padding: 5px 12px; border-radius: 20px; font-size: .8rem; margin: 3px; }
+    .wrap { max-width: 1100px; margin: 20px auto; padding: 0 14px; }
+    h2 { color: var(--ameixa); margin-bottom: 14px; border-left: 4px solid var(--claro); padding-left: 10px; font-size: 1.25rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+    .card { background: #fff; border: 1px solid var(--borda); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+    .card img { width: 100%; height: 220px; object-fit: cover; background: #EFE4EC; }
+    .c-body { padding: 14px; flex: 1; display: flex; flex-direction: column; }
+    .c-title { font-weight: 700; color: var(--ameixa); font-size: 1.05rem; margin-bottom: 4px; }
+    .c-price { font-size: 1.3rem; font-weight: 800; color: var(--ameixa2); margin: 6px 0; }
+    select, input { width: 100%; padding: 8px; border: 1px solid var(--borda); border-radius: 6px; margin-bottom: 8px; font-size: .9rem; }
+    .modal { display: none; position: fixed; inset: 0; background: rgba(25,8,21,.75); z-index: 99; overflow-y: auto; padding: 16px; }
+    .m-box { background: #fff; max-width: 480px; margin: 20px auto; border-radius: 12px; padding: 20px; position: relative; border-top: 5px solid var(--ameixa); }
+    .close { position: absolute; top: 10px; right: 14px; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--borda); font-size: .88rem; }
+    .sec { background: #EEFAF1; border: 1px solid #B7E4C7; color: #1B4332; padding: 9px; border-radius: 8px; font-size: .8rem; margin: 10px 0; }
+    nav { position: fixed; bottom: 0; inset-inline: 0; background: var(--ameixa); display: flex; justify-content: space-around; padding: 9px 0; z-index: 50; }
+    nav button, nav a { background: none; border: none; color: #fff; font-size: .85rem; text-decoration: none; cursor: pointer; }
   </style>
 </head>
 <body>
-
-  <div class="top-bar">
-    <strong>MOSAICO BLIAR:</strong> NOVIDADES E OFERTAS ESPECIAIS • <strong>PIX, CRÉDITO OU DÉBITO VIA MERCADO PAGO</strong>
-  </div>
-
+  <div class="top"><strong>MOSAICO BLIAR:</strong> PIX, CRÉDITO OU DÉBITO VIA <strong>MERCADO PAGO</strong></div>
   <header>
     <div class="logo">Mosaico <span>Bliar</span></div>
-    <div class="header-actions">
-      <button class="btn btn-outline" onclick="abrirCarrinho()">🛍 Carrinho (<span id="cart-count">0</span>)</button>
-      <a class="btn btn-whats" href="https://wa.me" target="_blank">💬 WhatsApp</a>
+    <div>
+      <button class="btn btn-o" onclick="abrir('m-cart')">🛍 (<span id="qtd">0</span>)</button>
+      <a class="btn btn-w" href="https://wa.me" target="_blank">💬 WhatsApp</a>
     </div>
   </header>
 
-  <section class="hero">
+  <div class="hero">
     <h1>Estilo e Conforto em Cada Passo</h1>
-    <p>Escolha seu modelo, numeração e cor. Pague com segurança no Pix, Cartão de Débito ou Crédito parcelado.</p>
-    <div class="badges">
-      <span class="badge">🚚 Envio via Correios e Transportadora</span>
-      <span class="badge">🔒 Pagamento 100% Seguro Mercado Pago</span>
-    </div>
-  </section>
+    <p>Escolha seu modelo, numeração e cor. Pague no Pix, Débito ou Crédito parcelado.</p>
+    <span class="badge">🚚 Envio Correios / Transportadora</span>
+    <span class="badge">🔒 Seguro Mercado Pago</span>
+  </div>
 
-  <main class="container">
-    <h2 class="section-title">Destaques do Mosaico Bliar</h2>
-    <div class="grid" id="lista-produtos"></div>
-  </main>
+  <div class="wrap">
+    <h2>Destaques do Mosaico Bliar</h2>
+    <div class="grid" id="vitrine"></div>
+  </div>
 
-  <!-- Modal Carrinho e Pagamento Seguro -->
-  <div class="modal" id="modal-carrinho">
-    <div class="modal-content">
-      <button class="close-btn" onclick="fecharModal('modal-carrinho')">&times;</button>
-      <h2 style="color: var(--ameixa-escuro); margin-bottom: 12px;">Finalizar Compra</h2>
-
-      <div id="itens-carrinho"></div>
-
-      <div class="frete-box">
-        <label style="font-size: 0.85rem; font-weight: 700; color: var(--ameixa-escuro);">Calcule o frete pelo CEP:</label>
-        <div class="frete-row">
-          <input type="text" id="cep-cliente" placeholder="00000-000" maxlength="9" style="flex:1; padding:8px; border:1px solid var(--borda); border-radius:6px;" />
-          <button class="btn btn-primary" onclick="calcularFrete()">Calcular</button>
-        </div>
-        <p id="resultado-frete" style="font-size: 0.85rem; margin-top: 6px; color: var(--sucesso); font-weight: 600;"></p>
+  <!-- Modal Carrinho -->
+  <div class="modal" id="m-cart">
+    <div class="m-box">
+      <button class="close" onclick="fechar('m-cart')">&times;</button>
+      <h2>Finalizar Compra</h2>
+      <div id="lista-cart"></div>
+      <div style="display:flex; gap:6px; margin-top:10px;">
+        <input type="text" id="cep" placeholder="CEP: 00000-000" maxlength="9" />
+        <button class="btn btn-p" onclick="calcFrete()" style="height:36px;">Frete</button>
       </div>
-
-      <div class="form-group">
-        <label>Nome completo para entrega</label>
-        <input type="text" id="nome-cliente" placeholder="Digite seu nome completo" />
-      </div>
-      <div class="form-group">
-        <label>Endereço completo (Rua, Número, Bairro, Cidade/UF)</label>
-        <input type="text" id="endereco-cliente" placeholder="Ex.: Rua das Flores, 123 - Centro - São Paulo/SP" />
-      </div>
-
-      <div class="resumo-total">
-        Total: R$ <span id="total-compra">0,00</span>
-      </div>
-
-      <div class="security-note">
-        🔒 <strong>Ambiente Seguro:</strong> Nenhum dado do seu cartão é digitado neste site. Ao clicar abaixo, você será levado diretamente para o ambiente seguro do <strong>Mercado Pago</strong> para pagar no Pix, Débito ou Crédito parcelado.
-      </div>
-
-      <button class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1rem; padding: 14px;" onclick="irParaPagamento()">
-        💳 Pagar Agora com Mercado Pago
-      </button>
+      <p id="msg-frete" style="font-size:.82rem; color:#1E7E34; margin-bottom:8px;"></p>
+      <input type="text" id="cli-nome" placeholder="Nome completo para entrega" />
+      <input type="text" id="cli-end" placeholder="Endereço completo (Rua, Nº, Bairro, Cidade/UF)" />
+      <div style="text-align:right; font-weight:800; font-size:1.15rem; color:var(--ameixa); margin:8px 0;">Total: R$ <span id="total">0,00</span></div>
+      <div class="sec">🔒 <strong>Ambiente Seguro:</strong> Nenhum dado de cartão é digitado aqui. Você será levado direto ao <strong>Mercado Pago</strong>.</div>
+      <button class="btn btn-p" style="width:100%; justify-content:center; padding:12px;" onclick="pagar()">💳 Pagar Agora com Mercado Pago</button>
     </div>
   </div>
 
-  <!-- Modal Cadastro de Produto (Admin) -->
-  <div class="modal" id="modal-cadastro">
-    <div class="modal-content">
+  <!-- Modal Cadastrar Produto -->
+  <div class="modal" id="m-admin">
+    <div class="m-box">
+      <button class="close" onclick="fechar('m-admin')">&times;</button>
+      <h2>Cadastrar Novo Produto</h2>
+      <input type="file" id="p-foto" accept="image/*" />
+      <input type="text" id="p-nome" placeholder="Nome do calçado (Ex.: Tênis Ameixa)" />
+      <input type="number" id="p-preco" placeholder="Preço (Ex.: 199.90)" step="0.01" />
+      <input type="text" id="p-nums" placeholder="Numerações (Ex.: 34, 35, 36, 37, 38)" value="34, 35, 36, 37, 38, 39" />
+      <input type="text" id="p-cores" placeholder="Cores (Ex.: Roxo Ameixa, Preto, Branco)" value="Roxo Ameixa, Preto, Branco" />
+      <input type="url" id="p-link" placeholder="Cole aqui o Link de Pagamento do Mercado Pago" />
+      <button class="btn btn-p" style="width:100%; justify-content:center;" onclick="salvarProd()">Salvar na Vitrine</button>
+    </div>
+  </div>
+
+  <nav>
+    <button onclick="window.scrollTo(0,0)">🏠 Início</button>
+    <button onclick="abrir('m-cart')">🛍 Carrinho</button>
+    <button onclick="abrirAdmin()">➕ Cadastrar Produto</button>
+    <a href="https://wa.me" target="_blank">💬 Ajuda</a>
+  </nav>
+
+  <script>
+    const SENHA_ADMIN = "mosaico2026";
+    let frete = 0, cart = [];
+    let produtos = JSON.parse(localStorage.getItem("mb_prods")) || [
+      { id: 1, nome: "Tênis Casual Conforto", preco: 189.90, nums: "35, 36, 37, 38, 39", cores: "Roxo Ameixa, Preto", img: "https://unsplash.com", link: "" },
+      { id: 2, nome: "Sandália Salto Bloco", preco: 149.90, nums: "34, 35, 36, 37, 38", cores: "Ameixa, Nude, Preto", img: "https://unsplash.com", link: "" }
+    ];
+
+    function render() {
+      document.getElementById("vitrine").innerHTML = produtos.map((p, i) => `
+        <div class="card">
+          <img src="${p.img}" alt="${p.nome}">
+          <div class="c-body">
+            <div class="c-title">${p.nome}</div>
+            <div class="c-price">R$ ${Number(p.preco).toFixed(2).replace('.', ',')}</div>
+            <select id="num-${i}">${p.nums.split(',').map(n => `<option>Tam: ${n.trim()}</option>`).join('')}</select>
+            <select id="cor-${i}">${p.cores.split(',').map(c => `<option>Cor: ${c.trim()}</option>`).join('')}</select>
+            <button class="btn btn-p" style="width:100%; justify-content:center;" onclick="addCart(${i})">Adicionar ao Carrinho</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addCart(i) {
+      const p = produtos[i];
+      cart.push({ nome: p.nome, preco: Number(p.preco), num: document.getElementById(`num-${i}`).value, cor: document.getElementById(`cor-${i}`).value, link: p.link });
+      atualizarCart();
+      abrir('m-cart');
+    }
+
+    function atualizarCart() {
+      document.getElementById("qtd").innerText = cart.length;
+      let sub = 0;
+      document.getElementById("lista-cart").innerHTML = cart.map((item, idx) => {
+        sub += item.preco;
+        return `<div class="item-row"><span>${item.nome} (${item.num} | ${item.cor})</span><strong>R$ ${item.preco.toFixed(2).replace('.', ',')} <button onclick="remCart(${idx})" style="color:red;border:none;background:none;cursor:pointer;">✕</button></strong></div>`;
+      }).join('') || "<p>Carrinho vazio.</p>";
+      document.getElementById("total").innerText = (sub + frete).toFixed(2).replace('.', ',');
+    }
+
+    function remCart(idx) { cart.splice(idx, 1); atualizarCart(); }
+    function calcFrete() {
+      if (document.getElementById("cep").value.replace(/\D/g,'').length < 8) return alert("Digite um CEP válido.");
+      frete = 19.90;
+      document.getElementById("msg-frete").innerText = "Frete fixo promocional: R$ 19,90";
+      atualizarCart();
+    }
+
+    function pagar() {
+      if (!cart.length) return alert("Adicione um produto primeiro!");
+      const nome = document.getElementById("cli-nome").value.trim();
+      const end = document.getElementById("cli-end").value.trim();
+      if (!nome || !end) return alert("Preencha seu nome e endereço completo para entrega.");
