@@ -6,7 +6,7 @@
   <title>Mosaico Bliar — Loja Oficial</title>
   <style>
     :root {
-      --blqck: #0a0a0c;
+      --black: #0a0a0c;
       --black-2: #121216;
       --black-3: #1b1b21;
       --gold: #dfb63f;
@@ -72,14 +72,7 @@
       gap: 12px;
     }
 
-    .logo-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--white);
-    }
-
+    .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); }
     .logo-text-group { display: flex; flex-direction: column; line-height: 1.05; }
     .logo-main { font-size: 1.15rem; font-weight: 900; letter-spacing: 1px; color: var(--white); }
     .logo-sub { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; color: var(--gold-bright); text-transform: uppercase; }
@@ -176,7 +169,7 @@
       border-color: var(--border-dark);
     }
 
-    .gallery-picker-box {
+    .media-picker-box {
       border: 1.5px dashed var(--gold);
       border-radius: 12px;
       padding: 14px;
@@ -184,8 +177,17 @@
       text-align: center;
     }
 
-    .preview-strip { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; justify-content: center; }
+    .preview-strip { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; justify-content: center; align-items: center; }
     .preview-strip img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; border: 1.5px solid var(--gold); }
+    .video-preview-badge {
+      font-size: 0.8rem;
+      color: var(--gold-bright);
+      background: var(--black-3);
+      border: 1px solid var(--gold);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-weight: 700;
+    }
 
     .section-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
     .section-title { margin: 0; font-size: 1.35rem; font-weight: 800; color: var(--black); }
@@ -234,26 +236,18 @@
       border-radius: 10px;
       overflow: hidden;
       background: var(--black-2);
-      position: relative;
     }
 
     .main-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    .video-embed-wrap {
+    .main-video {
       display: none;
       width: 100%;
       height: 100%;
+      object-fit: contain;
       background: #000;
     }
-
-    .video-embed-wrap.active { display: block; }
-
-    .video-embed-wrap iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      display: block;
-    }
+    .main-video.active { display: block; }
 
     .thumbs { display: flex; gap: 8px; margin-top: 8px; overflow-x: auto; align-items: center; }
     .thumb {
@@ -288,11 +282,7 @@
       gap: 2px;
       padding: 2px;
     }
-
-    .thumb-video.active {
-      background: var(--gold-bright);
-      color: var(--black);
-    }
+    .thumb-video.active { background: var(--gold-bright); color: var(--black); }
 
     .card-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
     .prod-name { margin: 0; font-size: 1.12rem; font-weight: 800; color: var(--black); }
@@ -422,13 +412,19 @@
   <main class="container">
     <section id="adminPanel" class="admin-panel">
       <h2 id="adminTitle" style="margin:0 0 4px; color:var(--gold-bright); font-size:1.15rem;">Cadastrar produto</h2>
-      <p style="margin:0; font-size:0.84rem; color:#c8c8d2;">Coloque até <strong>5 fotos da galeria</strong> e <strong>1 link de vídeo (YouTube ou TikTok)</strong> para tocar direto dentro da loja. Separe cores e numerações por <strong>vírgula</strong>.</p>
+      <p style="margin:0; font-size:0.84rem; color:#c8c8d2;">Pegue as fotos e o vídeo direto da sua galeria. Separe cada cor e cada numeração por <strong>vírgula</strong>.</p>
 
       <form id="productForm" class="form-grid">
-        <div style="grid-column: 1 / -1;" class="gallery-picker-box">
-          <label for="pGallery" style="font-size:0.92rem; margin-bottom:8px;">📸 Fotos da galeria (até 5 fotos)</label>
+        <div class="media-picker-box">
+          <label for="pGallery" style="font-size:0.9rem; margin-bottom:8px;">📸 Fotos da galeria (até 5 fotos)</label>
           <input id="pGallery" type="file" accept="image/*" multiple>
           <div id="galleryPreview" class="preview-strip"></div>
+        </div>
+
+        <div class="media-picker-box">
+          <label for="pVideoFile" style="font-size:0.9rem; margin-bottom:8px;">🎬 Vídeo da galeria (1 vídeo)</label>
+          <input id="pVideoFile" type="file" accept="video/*">
+          <div id="videoPreview" class="preview-strip"></div>
         </div>
 
         <div>
@@ -447,13 +443,9 @@
           <label for="pColors">Cores (separadas por vírgula)</label>
           <input id="pColors" type="text" value="Preto, Off, Vermelho" required>
         </div>
-        <div>
+        <div style="grid-column: 1 / -1;">
           <label for="pMpLink">Link de checkout do Mercado Pago</label>
           <input id="pMpLink" type="url" required>
-        </div>
-        <div>
-          <label for="pVideo">Vídeo do produto (link do YouTube ou TikTok)</label>
-          <input id="pVideo" type="url" placeholder="https://youtube.com/shorts/... ou https://www.tiktok.com/...">
         </div>
         <div style="grid-column: 1 / -1;">
           <label for="pDesc">Descrição e detalhes</label>
@@ -510,14 +502,15 @@
         sizes: ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"],
         colors: ["Preto", "Off", "Vermelho"],
         mpLink: CONFIG.mercadoPagoLojaPadrao,
-        description: "Veja as fotos e assista ao vídeo direto dentro da loja antes de finalizar no Mercado Pago.",
-        videoUrl: "",
+        description: "Escolha cor e numeração, calcule o frete pelo CEP e finalize no Mercado Pago.",
+        videoData: "",
         photos: ["https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80"]
       }
     ];
 
     const STORAGE_KEY = "mosaico_bliar_mp_v2";
     let selectedGalleryImages = [];
+    let selectedGalleryVideo = "";
     let editingProductId = null;
 
     function loadProducts() {
@@ -532,24 +525,14 @@
     }
 
     function saveProducts(items) {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch (e) {}
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      } catch (e) {
+        alert("O vídeo ou as fotos ocuparam o limite da memória do navegador. Tente um vídeo menor ou menos fotos.");
+      }
     }
 
     function money(v) { return Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }); }
-
-    function toEmbedVideoUrl(url) {
-      if (!url) return "";
-      const clean = url.trim();
-      const ytShorts = clean.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
-      if (ytShorts) return `https://www.youtube.com/embed/${ytShorts[1]}?rel=0`;
-      const ytWatch = clean.match(/[?&]v=([a-zA-Z0-9_-]+)/);
-      if (ytWatch) return `https://www.youtube.com/embed/${ytWatch[1]}?rel=0`;
-      const ytShortLink = clean.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
-      if (ytShortLink) return `https://www.youtube.com/embed/${ytShortLink[1]}?rel=0`;
-      const tiktokMatch = clean.match(/tiktok\.com\/.*\/video\/(\d+)/);
-      if (tiktokMatch) return `https://www.tiktok.com/embed/v2/${tiktokMatch[1]}`;
-      return "";
-    }
 
     function openAdminPanel() {
       const p = document.getElementById("adminPanel");
@@ -560,7 +543,9 @@
     function closeAdmin() {
       editingProductId = null;
       selectedGalleryImages = [];
+      selectedGalleryVideo = "";
       document.getElementById("galleryPreview").innerHTML = "";
+      document.getElementById("videoPreview").innerHTML = "";
       document.getElementById("productForm").reset();
       document.getElementById("pSizes").value = "34, 35, 36, 37, 38, 39, 40, 41, 42, 43";
       document.getElementById("pColors").value = "Preto, Off, Vermelho";
@@ -570,7 +555,9 @@
     function openNewProductPanel() {
       editingProductId = null;
       selectedGalleryImages = [];
+      selectedGalleryVideo = "";
       document.getElementById("galleryPreview").innerHTML = "";
+      document.getElementById("videoPreview").innerHTML = "";
       document.getElementById("productForm").reset();
       document.getElementById("pSizes").value = "34, 35, 36, 37, 38, 39, 40, 41, 42, 43";
       document.getElementById("pColors").value = "Preto, Off, Vermelho";
@@ -584,6 +571,7 @@
       if (!prod) return;
       editingProductId = prod.id;
       selectedGalleryImages = [];
+      selectedGalleryVideo = "";
       document.getElementById("adminTitle").textContent = "Editando: " + prod.name;
       document.getElementById("saveProdBtn").textContent = "Salvar alterações";
       document.getElementById("pName").value = prod.name || "";
@@ -591,9 +579,11 @@
       document.getElementById("pSizes").value = (prod.sizes || []).join(", ");
       document.getElementById("pColors").value = (prod.colors || []).join(", ");
       document.getElementById("pMpLink").value = prod.mpLink || "";
-      document.getElementById("pVideo").value = prod.videoUrl || "";
       document.getElementById("pDesc").value = prod.description || "";
       document.getElementById("galleryPreview").innerHTML = (prod.photos || []).map((s) => `<img src="${s}" alt="">`).join("");
+      document.getElementById("videoPreview").innerHTML = prod.videoData
+        ? `<span class="video-preview-badge">🎬 Vídeo salvo neste produto</span>`
+        : "";
       openAdminPanel();
     }
 
@@ -621,6 +611,15 @@
       });
     }
 
+    function readVideoFileAsDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => resolve(ev.target.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
     document.getElementById("pGallery").addEventListener("change", async function (e) {
       const files = [...(e.target.files || [])].slice(0, 5);
       const preview = document.getElementById("galleryPreview");
@@ -632,12 +631,26 @@
       preview.innerHTML = selectedGalleryImages.map((src) => `<img src="${src}" alt="">`).join("");
     });
 
+    document.getElementById("pVideoFile").addEventListener("change", async function (e) {
+      const file = e.target.files?.[0];
+      const preview = document.getElementById("videoPreview");
+      if (!file) {
+        selectedGalleryVideo = "";
+        preview.innerHTML = "";
+        return;
+      }
+      preview.innerHTML = "<span style='color:var(--gold-bright); font-size:0.84rem;'>Carregando vídeo da galeria...</span>";
+      selectedGalleryVideo = await readVideoFileAsDataUrl(file);
+      preview.innerHTML = `<span class="video-preview-badge">🎬 ${file.name}</span>`;
+    });
+
     function showPhoto(id, idx, url) {
       const img = document.getElementById("img-" + id);
-      const vidWrap = document.getElementById("vidwrap-" + id);
-      const vidFrame = document.getElementById("vidframe-" + id);
-      if (vidWrap) vidWrap.classList.remove("active");
-      if (vidFrame) vidFrame.src = "";
+      const vid = document.getElementById("vid-" + id);
+      if (vid) {
+        vid.pause();
+        vid.classList.remove("active");
+      }
       if (img) {
         img.style.display = "block";
         img.src = url;
@@ -648,17 +661,14 @@
       }
     }
 
-    function showVideo(id, embedUrl, rawUrl) {
-      if (!embedUrl) {
-        if (rawUrl) window.open(rawUrl, "_blank", "noopener");
-        return;
-      }
+    function showVideo(id) {
       const img = document.getElementById("img-" + id);
-      const vidWrap = document.getElementById("vidwrap-" + id);
-      const vidFrame = document.getElementById("vidframe-" + id);
+      const vid = document.getElementById("vid-" + id);
       if (img) img.style.display = "none";
-      if (vidWrap) vidWrap.classList.add("active");
-      if (vidFrame) vidFrame.src = embedUrl;
+      if (vid) {
+        vid.classList.add("active");
+        vid.play().catch(() => {});
+      }
       const thumbs = document.getElementById("thumbs-" + id);
       if (thumbs) {
         [...thumbs.children].forEach((btn) => btn.classList.remove("active"));
@@ -733,7 +743,7 @@
         const sizes = (p.sizes && p.sizes.length) ? p.sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"];
         const colors = (p.colors && p.colors.length) ? p.colors : ["Preto", "Off", "Vermelho"];
         const checkoutUrl = p.mpLink || CONFIG.mercadoPagoLojaPadrao;
-        const embedUrl = toEmbedVideoUrl(p.videoUrl);
+        const hasVideo = Boolean(p.videoData);
 
         const thumbs = photos.map((u, idx) => `
           <button type="button" class="thumb ${idx === 0 ? "active" : ""}" onclick="showPhoto('${p.id}', ${idx}, '${u.replace(/'/g, "\\'")}')" aria-label="Foto ${idx + 1}">
@@ -741,8 +751,12 @@
           </button>
         `).join("");
 
-        const videoThumb = p.videoUrl
-          ? `<button type="button" class="thumb-video" onclick="showVideo('${p.id}', '${embedUrl.replace(/'/g, "\\'")}', '${p.videoUrl.replace(/'/g, "\\'")}')" aria-label="Assistir vídeo do produto"><span>▶</span><span>Vídeo</span></button>`
+        const videoThumb = hasVideo
+          ? `<button type="button" class="thumb-video" onclick="showVideo('${p.id}')" aria-label="Assistir vídeo do produto"><span>▶</span><span>Vídeo</span></button>`
+          : "";
+
+        const videoPlayer = hasVideo
+          ? `<video id="vid-${p.id}" class="main-video" src="${p.videoData}" controls playsinline preload="metadata"></video>`
           : "";
 
         return `
@@ -754,9 +768,7 @@
               </div>
               <div class="media-stage">
                 <img id="img-${p.id}" class="main-img" src="${photos[0]}" alt="${p.name}">
-                <div id="vidwrap-${p.id}" class="video-embed-wrap">
-                  <iframe id="vidframe-${p.id}" title="Vídeo de ${p.name}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
+                ${videoPlayer}
               </div>
               <div id="thumbs-${p.id}" class="thumbs">${thumbs}${videoThumb}</div>
             </div>
@@ -795,7 +807,6 @@
       const sizes = document.getElementById("pSizes").value.split(",").map((s) => s.trim()).filter(Boolean);
       const colors = document.getElementById("pColors").value.split(",").map((c) => c.trim()).filter(Boolean);
       const mpLink = document.getElementById("pMpLink").value.trim();
-      const videoUrl = document.getElementById("pVideo").value.trim();
       const description = document.getElementById("pDesc").value.trim();
 
       if (!name || isNaN(price) || !mpLink) { alert("Preencha nome, preço e link do Mercado Pago."); return; }
@@ -806,8 +817,9 @@
           ...item, name, price,
           sizes: sizes.length ? sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"],
           colors: colors.length ? colors : ["Preto", "Off", "Vermelho"],
-          mpLink, videoUrl, description,
-          photos: selectedGalleryImages.length ? selectedGalleryImages : item.photos
+          mpLink, description,
+          photos: selectedGalleryImages.length ? selectedGalleryImages : item.photos,
+          videoData: selectedGalleryVideo || item.videoData || ""
         }));
       } else {
         if (!selectedGalleryImages.length) { alert("Selecione pelo menos 1 foto da galeria."); return; }
@@ -815,7 +827,9 @@
           id: "mb-" + Date.now(), name, price,
           sizes: sizes.length ? sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"],
           colors: colors.length ? colors : ["Preto", "Off", "Vermelho"],
-          mpLink, videoUrl, photos: selectedGalleryImages, description
+          mpLink, description,
+          photos: selectedGalleryImages,
+          videoData: selectedGalleryVideo || ""
         }, ...current.filter((item) => item.id !== "mb-1")]);
       }
       renderProducts();
