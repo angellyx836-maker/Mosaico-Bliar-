@@ -177,6 +177,13 @@
       text-align: center;
     }
 
+    .media-hint {
+      font-size: 0.75rem;
+      color: #c8c8d2;
+      margin-top: 6px;
+      display: block;
+    }
+
     .preview-strip { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; justify-content: center; align-items: center; }
     .preview-strip img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; border: 1.5px solid var(--gold); }
     .video-preview-badge {
@@ -412,18 +419,20 @@
   <main class="container">
     <section id="adminPanel" class="admin-panel">
       <h2 id="adminTitle" style="margin:0 0 4px; color:var(--gold-bright); font-size:1.15rem;">Cadastrar produto</h2>
-      <p style="margin:0; font-size:0.84rem; color:#c8c8d2;">Pegue as fotos e o vídeo direto da sua galeria. Separe cada cor e cada numeração por <strong>vírgula</strong>.</p>
+      <p style="margin:0; font-size:0.84rem; color:#c8c8d2;">Até <strong>3 fotos</strong> e <strong>1 vídeo curto opcional</strong> da galeria. Separe cores e numerações por <strong>vírgula</strong>.</p>
 
       <form id="productForm" class="form-grid">
         <div class="media-picker-box">
-          <label for="pGallery" style="font-size:0.9rem; margin-bottom:8px;">📸 Fotos da galeria (até 5 fotos)</label>
+          <label for="pGallery" style="font-size:0.9rem; margin-bottom:8px;">📸 Fotos da galeria (até 3 fotos)</label>
           <input id="pGallery" type="file" accept="image/*" multiple>
+          <span class="media-hint">Comprimidas automaticamente para caber vários produtos.</span>
           <div id="galleryPreview" class="preview-strip"></div>
         </div>
 
         <div class="media-picker-box">
-          <label for="pVideoFile" style="font-size:0.9rem; margin-bottom:8px;">🎬 Vídeo da galeria (1 vídeo)</label>
+          <label for="pVideoFile" style="font-size:0.9rem; margin-bottom:8px;">🎬 Vídeo curto da galeria (opcional)</label>
           <input id="pVideoFile" type="file" accept="video/*">
+          <span class="media-hint">Ideal para videozinho leve (até ~1,5 MB). Sem vídeo nos vasos se preferir.</span>
           <div id="videoPreview" class="preview-strip"></div>
         </div>
 
@@ -504,11 +513,13 @@
         mpLink: CONFIG.mercadoPagoLojaPadrao,
         description: "Escolha cor e numeração, calcule o frete pelo CEP e finalize no Mercado Pago.",
         videoData: "",
-        photos: ["https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80"]
+        photos: ["https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=70"]
       }
     ];
 
     const STORAGE_KEY = "mosaico_bliar_mp_v2";
+    const MAX_VIDEO_BYTES = 1500000; // ~1,5 MB para caber dezenas de produtos sem travar o navegador
+
     let selectedGalleryImages = [];
     let selectedGalleryVideo = "";
     let editingProductId = null;
@@ -527,8 +538,9 @@
     function saveProducts(items) {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+        return true;
       } catch (e) {
-        alert("O vídeo ou as fotos ocuparam o limite da memória do navegador. Tente um vídeo menor ou menos fotos.");
+        return false;
       }
     }
 
@@ -587,7 +599,7 @@
       openAdminPanel();
     }
 
-    function compressImageFile(file, maxSize = 800, quality = 0.76) {
+    function compressImageFile(file, maxSize = 640, quality = 0.65) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (ev) => {
@@ -621,9 +633,9 @@
     }
 
     document.getElementById("pGallery").addEventListener("change", async function (e) {
-      const files = [...(e.target.files || [])].slice(0, 5);
+      const files = [...(e.target.files || [])].slice(0, 3);
       const preview = document.getElementById("galleryPreview");
-      preview.innerHTML = "<span style='color:var(--gold-bright); font-size:0.84rem;'>Carregando fotos...</span>";
+      preview.innerHTML = "<span style='color:var(--gold-bright); font-size:0.84rem;'>Comprimindo até 3 fotos...</span>";
       selectedGalleryImages = [];
       for (const f of files) {
         selectedGalleryImages.push(await compressImageFile(f));
@@ -639,7 +651,13 @@
         preview.innerHTML = "";
         return;
       }
-      preview.innerHTML = "<span style='color:var(--gold-bright); font-size:0.84rem;'>Carregando vídeo da galeria...</span>";
+      if (file.size > MAX_VIDEO_BYTES) {
+        selectedGalleryVideo = "";
+        e.target.value = "";
+        preview.innerHTML = `<span class="video-preview-badge" style="color:#fca5a5; border-color:#ef4444;">⚠️ Vídeo grande demais para caber vários produtos. Escolha um videozinho mais curto/leve ou salve sem vídeo.</span>`;
+        return;
+      }
+      preview.innerHTML = "<span style='color:var(--gold-bright); font-size:0.84rem;'>Carregando vídeo...</span>";
       selectedGalleryVideo = await readVideoFileAsDataUrl(file);
       preview.innerHTML = `<span class="video-preview-badge">🎬 ${file.name}</span>`;
     });
@@ -739,7 +757,7 @@
       }
 
       grid.innerHTML = filtered.map((p) => {
-        const photos = (p.photos && p.photos.length) ? p.photos : INITIAL_PRODUCTS[0].photos;
+        const photos = ((p.photos && p.photos.length) ? p.photos : INITIAL_PRODUCTS[0].photos).slice(0, 3);
         const sizes = (p.sizes && p.sizes.length) ? p.sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"];
         const colors = (p.colors && p.colors.length) ? p.colors : ["Preto", "Off", "Vermelho"];
         const checkoutUrl = p.mpLink || CONFIG.mercadoPagoLojaPadrao;
@@ -812,26 +830,40 @@
       if (!name || isNaN(price) || !mpLink) { alert("Preencha nome, preço e link do Mercado Pago."); return; }
 
       const current = loadProducts();
+      let nextList;
+
       if (editingProductId) {
-        saveProducts(current.map((item) => item.id !== editingProductId ? item : {
+        nextList = current.map((item) => item.id !== editingProductId ? item : {
           ...item, name, price,
           sizes: sizes.length ? sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"],
           colors: colors.length ? colors : ["Preto", "Off", "Vermelho"],
           mpLink, description,
-          photos: selectedGalleryImages.length ? selectedGalleryImages : item.photos,
+          photos: (selectedGalleryImages.length ? selectedGalleryImages : item.photos).slice(0, 3),
           videoData: selectedGalleryVideo || item.videoData || ""
-        }));
+        });
       } else {
         if (!selectedGalleryImages.length) { alert("Selecione pelo menos 1 foto da galeria."); return; }
-        saveProducts([{
+        nextList = [{
           id: "mb-" + Date.now(), name, price,
           sizes: sizes.length ? sizes : ["34", "35", "36", "37", "38", "39", "40", "41", "42", "43"],
           colors: colors.length ? colors : ["Preto", "Off", "Vermelho"],
           mpLink, description,
-          photos: selectedGalleryImages,
+          photos: selectedGalleryImages.slice(0, 3),
           videoData: selectedGalleryVideo || ""
-        }, ...current.filter((item) => item.id !== "mb-1")]);
+        }, ...current.filter((item) => item.id !== "mb-1")];
       }
+
+      if (!saveProducts(nextList) && selectedGalleryVideo) {
+        // Se estourou por causa do vídeo, tenta salvar sem o vídeo para não perder o produto
+        const withoutVideo = nextList.map((p, idx) => idx === 0 ? { ...p, videoData: "" } : p);
+        if (saveProducts(withoutVideo)) {
+          alert("O produto e as fotos foram salvos, mas o vídeo não coube na memória junto com os outros itens. Você pode cadastrar o produto sem vídeo ou usar um videozinho bem curto.");
+        } else {
+          alert("A memória local do navegador está cheia. Remova algum produto antigo ou use 'Copiar catálogo p/ publicar no GitHub'.");
+          return;
+        }
+      }
+
       renderProducts();
       closeAdmin();
     });
